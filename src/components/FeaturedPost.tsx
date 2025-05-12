@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Post } from "@/data/blogPosts";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { useLanguage, languages } from "@/contexts/LanguageContext";
 
 interface FeaturedPostProps {
   post: Post;

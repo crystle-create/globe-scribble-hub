@@ -9,10 +9,7 @@ import { FeaturedPost } from "@/components/FeaturedPost";
 import { ArrowLeft, Share2 } from "lucide-react";
 import { toast } from "sonner";
 import { Card, CardContent } from "@/components/ui/card";
-
-// Import a markdown library
 import ReactMarkdown from "react-markdown";
-<lov-add-dependency>react-markdown@latest</lov-add-dependency>
 
 const BlogPost = () => {
   const { id } = useParams<{ id: string }>();
