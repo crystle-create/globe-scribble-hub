@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { useLanguage, Language } from "@/contexts/LanguageContext";
-import { Globe } from "lucide-react";
+import { Cloud, CloudSun } from "lucide-react";
 import { 
   DropdownMenu, 
   DropdownMenuContent, 
@@ -24,8 +24,11 @@ export function Header() {
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
         {/* Logo */}
         <Link to="/" className="flex items-center space-x-2">
-          <Globe className="h-6 w-6 text-blog-indigo" />
-          <span className="text-2xl font-bold font-playfair text-blog-dark">WorldBlog</span>
+          <div className="relative">
+            <Cloud className="h-8 w-8 text-blog-indigo" />
+            <CloudSun className="h-4 w-4 text-blog-amber absolute -top-1 -right-1" />
+          </div>
+          <span className="text-2xl font-bold font-playfair text-blog-dark">CloudiBlog</span>
         </Link>
 
         {/* Desktop Navigation */}

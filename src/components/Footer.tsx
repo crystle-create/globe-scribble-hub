@@ -1,5 +1,5 @@
 
-import { Globe } from "lucide-react";
+import { Cloud, CloudSun } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -14,8 +14,11 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
             <Link to="/" className="flex items-center space-x-2 mb-4">
-              <Globe className="h-5 w-5 text-blog-indigo" />
-              <span className="text-xl font-bold font-playfair text-blog-dark">WorldBlog</span>
+              <div className="relative">
+                <Cloud className="h-6 w-6 text-blog-indigo" />
+                <CloudSun className="h-3 w-3 text-blog-amber absolute -top-1 -right-1" />
+              </div>
+              <span className="text-xl font-bold font-playfair text-blog-dark">CloudiBlog</span>
             </Link>
             <p className="text-gray-500 text-sm">
               Sharing perspectives from across the globe. Read, write, and connect with voices from around the world.
@@ -55,7 +58,7 @@ export function Footer() {
         
         <div className="border-t mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-gray-500 text-sm">
-            © {year} WorldBlog. All rights reserved.
+            © {year} CloudiBlog. All rights reserved.
           </p>
           <div className="flex items-center space-x-4 mt-4 md:mt-0">
             <p className="text-gray-500 text-sm">

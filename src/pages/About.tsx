@@ -1,6 +1,5 @@
-
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Globe } from "lucide-react";
+import { Cloud, CloudSun } from "lucide-react";
 import { languages } from "@/contexts/LanguageContext";
 import { LanguageBadge } from "@/components/LanguageBadge";
 import { Card, CardContent } from "@/components/ui/card";
@@ -10,13 +9,13 @@ const About = () => {
   
   const translations = {
     about: {
-      en: "About WorldBlog",
-      es: "Sobre WorldBlog",
-      fr: "À propos de WorldBlog",
-      de: "Über WorldBlog",
-      zh: "关于 WorldBlog",
-      ja: "WorldBlog について",
-      ar: "حول WorldBlog"
+      en: "About CloudiBlog",
+      es: "Sobre CloudiBlog",
+      fr: "À propos de CloudiBlog",
+      de: "Über CloudiBlog",
+      zh: "关于 CloudiBlog",
+      ja: "CloudiBlog について",
+      ar: "حول CloudiBlog"
     },
     mission: {
       title: {
@@ -29,13 +28,13 @@ const About = () => {
         ar: "مهمتنا"
       },
       content: {
-        en: "WorldBlog is dedicated to sharing diverse perspectives and stories from around the globe. We believe in the power of international voices to broaden horizons, foster understanding, and build connections across cultures.",
-        es: "WorldBlog está dedicado a compartir perspectivas y historias diversas de todo el mundo. Creemos en el poder de las voces internacionales para ampliar horizontes, fomentar la comprensión y construir conexiones entre culturas.",
-        fr: "WorldBlog se consacre au partage de perspectives et d'histoires diverses du monde entier. Nous croyons au pouvoir des voix internationales pour élargir les horizons, favoriser la compréhension et créer des liens entre les cultures.",
-        de: "WorldBlog widmet sich dem Austausch vielfältiger Perspektiven und Geschichten aus der ganzen Welt. Wir glauben an die Kraft internationaler Stimmen, Horizonte zu erweitern, Verständnis zu fördern und Verbindungen zwischen Kulturen zu schaffen.",
-        zh: "WorldBlog 致力于分享来自世界各地的多元视角和故事。我们相信国际声音的力量，可以拓宽视野，促进理解，建立跨文化联系。",
-        ja: "WorldBlogは、世界中の多様な視点やストーリーを共有することに専念しています。私たちは、視野を広げ、理解を深め、文化を超えたつながりを構築する国際的な声の力を信じています。",
-        ar: "يكرس WorldBlog نفسه لمشاركة وجهات النظر والقصص المتنوعة من جميع أنحاء العالم. نؤمن بقوة الأصوات الدولية في توسيع الآفاق وتعزيز التفاهم وبناء روابط عبر الثقافات."
+        en: "CloudiBlog is dedicated to sharing diverse perspectives and stories from around the globe. We believe in the power of international voices to broaden horizons, foster understanding, and build connections across cultures.",
+        es: "CloudiBlog está dedicado a compartir perspectivas y historias diversas de todo el mundo. Creemos en el poder de las voces internacionales para ampliar horizontes, fomentar la comprensión y construir conexiones entre culturas.",
+        fr: "CloudiBlog se consacre au partage de perspectives et d'histoires diverses du monde entier. Nous croyons au pouvoir des voix internationales pour élargir les horizons, favoriser la compréhension et créer des liens entre les cultures.",
+        de: "CloudiBlog widmet sich dem Austausch vielfältiger Perspektiven und Geschichten aus der ganzen Welt. Wir glauben an die Kraft internationaler Stimmen, Horizonte zu erweitern, Verständnis zu fördern und Verbindungen zwischen Kulturen zu schaffen.",
+        zh: "CloudiBlog 致力于分享来自世界各地的多元视角和故事。我们相信国际声音的力量，可以拓宽视野，促进理解，建立跨文化联系。",
+        ja: "CloudiBlogは、世界中の多様な視点やストーリーを共有することに専念しています。私たちは、視野を広げ、理解を深め、文化を超えたつながりを構築する国際的な声の力を信じています。",
+        ar: "يكرس CloudiBlog نفسه لمشاركة وجهات النظر والقصص المتنوعة من جميع أنحاء العالم. نؤمن بقوة الأصوات الدولية في توسيع الآفاق وتعزيز التفاهم وبناء روابط عبر الثقافات."
       }
     },
     languages: {
@@ -49,13 +48,13 @@ const About = () => {
         ar: "اللغات التي ندعمها"
       },
       content: {
-        en: "WorldBlog currently supports content in seven languages, with plans to expand our linguistic offerings in the future. Our goal is to make quality content accessible to readers in their preferred language.",
-        es: "WorldBlog actualmente admite contenido en siete idiomas, con planes para ampliar nuestras ofertas lingüísticas en el futuro. Nuestro objetivo es hacer que el contenido de calidad sea accesible a los lectores en el idioma de su preferencia.",
-        fr: "WorldBlog prend actuellement en charge le contenu dans sept langues, avec des plans pour étendre nos offres linguistiques à l'avenir. Notre objectif est de rendre le contenu de qualité accessible aux lecteurs dans leur langue préférée.",
-        de: "WorldBlog unterstützt derzeit Inhalte in sieben Sprachen, mit Plänen, unser Sprachangebot in Zukunft zu erweitern. Unser Ziel ist es, qualitativ hochwertige Inhalte für Leser in ihrer bevorzugten Sprache zugänglich zu machen.",
-        zh: "WorldBlog 目前支持七种语言的内容，未来计划扩展我们的语言服务。我们的目标是让读者能够以他们喜欢的语言获取优质内容。",
-        ja: "WorldBlogは現在、7つの言語でコンテンツをサポートしており、将来的に言語提供を拡大する計画があります。私たちの目標は、読者が好みの言語で質の高いコンテンツにアクセスできるようにすることです。",
-        ar: "يدعم WorldBlog حاليًا المحتوى بسبع لغات، مع خطط لتوسيع عروضنا اللغوية في المستقبل. هدفنا هو جعل المحتوى عالي الجودة متاحًا للقراء بلغتهم المفضلة."
+        en: "CloudiBlog currently supports content in seven languages, with plans to expand our linguistic offerings in the future. Our goal is to make quality content accessible to readers in their preferred language.",
+        es: "CloudiBlog actualmente admite contenido en siete idiomas, con planes para ampliar nuestras ofertas lingüísticas en el futuro. Nuestro objetivo es hacer que el contenido de calidad sea accesible a los lectores en el idioma de su preferencia.",
+        fr: "CloudiBlog prend actuellement en charge le contenu dans sept langues, avec des plans pour étendre nos offres linguistiques à l'avenir. Notre objectif est de rendre le contenu de qualité accessible aux lecteurs dans leur langue préférée.",
+        de: "CloudiBlog unterstützt derzeit Inhalte in sieben Sprachen, mit Plänen, unser Sprachangebot in Zukunft zu erweitern. Unser Ziel ist es, qualitativ hochwertige Inhalte für Leser in ihrer bevorzugten Sprache zugänglich zu machen.",
+        zh: "CloudiBlog 目前支持七种语言的内容，未来计划扩展我们的语言服务。我们的目标是让读者能够以他们喜欢的语言获取优质内容。",
+        ja: "CloudiBlogは現在、7つの言語でコンテンツをサポートしており、将来的に言語提供を拡大する計画があります。私たちの目標は、読者が好みの言語で質の高いコンテンツにアクセスできるようにすることです。",
+        ar: "يدعم CloudiBlog حاليًا المحتوى بسبع لغات، مع خطط لتوسيع عروضنا اللغوية في المستقبل. هدفنا هو جعل المحتوى عالي الجودة متاحًا للقراء بلغتهم المفضلة."
       }
     },
     team: {
@@ -94,7 +93,7 @@ const About = () => {
         fr: "Vous avez une question, une suggestion ou vous souhaitez contribuer ? Nous aimerions avoir de vos nouvelles. Contactez notre équipe à contact@worldblog.com ou suivez-nous sur les réseaux sociaux.",
         de: "Haben Sie eine Frage, einen Vorschlag oder möchten Sie einen Beitrag leisten? Wir würden gerne von Ihnen hören. Kontaktieren Sie unser Team unter contact@worldblog.com oder folgen Sie uns in den sozialen Medien.",
         zh: "有问题、建议或想要投稿？我们很乐意收到您的来信。请通过 contact@worldblog.com 联系我们的团队，或在社交媒体上关注我们。",
-        ja: "質問、提案、または投稿したいですか？ぜひお聞かせください。contact@worldblog.com で私たちのチームに連絡するか、ソーシャルメディアでフォローしてください。",
+        ja: "質問、提案、または投稿したいですか？ぜひお聞かせください。contact@worldblog.com ��私たちのチームに連絡するか、ソーシャルメディアでフォローしてください。",
         ar: "هل لديك سؤال أو اقتراح أو ترغب في المساهمة؟ نود أن نسمع منك. تواصل مع فريقنا على contact@worldblog.com أو تابعنا على وسائل التواصل الاجتماعي."
       }
     }
@@ -116,10 +115,11 @@ const About = () => {
           </p>
           
           <div className="flex items-center justify-center my-12">
-            <div className="relative h-40 w-40">
-              <Globe className="h-full w-full text-blog-indigo" />
-              <div className="absolute inset-0 flex items-center justify-center">
-                <span className="text-4xl font-playfair font-bold">WorldBlog</span>
+            <div className="relative">
+              <Cloud className="h-32 w-32 text-blog-indigo" />
+              <CloudSun className="h-12 w-12 text-blog-amber absolute -top-4 -right-2" />
+              <div className="absolute inset-0 flex items-center justify-center pt-2">
+                <span className="text-3xl font-playfair font-bold text-white">CloudiBlog</span>
               </div>
             </div>
           </div>
