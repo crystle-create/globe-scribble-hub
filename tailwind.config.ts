@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -61,7 +62,18 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				// Custom colors for our blog
+				blog: {
+					indigo: '#4F46E5',  
+					amber: '#F59E0B',
+					lavender: '#C7D2FE',
+					dark: '#1F2937'
 				}
+			},
+			fontFamily: {
+				inter: ['Inter', 'system-ui', 'sans-serif'],
+				playfair: ['"Playfair Display"', 'serif']
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
