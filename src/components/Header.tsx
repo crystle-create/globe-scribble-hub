@@ -1,18 +1,10 @@
 
-import { useState } from 'react';
 import { Button } from "@/components/ui/button";
-import { useLanguage, Language } from "@/contexts/LanguageContext";
-import { Cloud, CloudSun } from "lucide-react";
-import { 
-  DropdownMenu, 
-  DropdownMenuContent, 
-  DropdownMenuItem,
-  DropdownMenuTrigger 
-} from "@/components/ui/dropdown-menu";
+import { Cloud, CloudSun, Search } from "lucide-react";
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
 
 export function Header() {
-  const { currentLanguage, setLanguage, languages } = useLanguage();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleMenu = () => {
@@ -20,7 +12,7 @@ export function Header() {
   };
 
   return (
-    <header className="w-full bg-white shadow-sm">
+    <header className="w-full bg-white shadow-sm sticky top-0 z-10">
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
         {/* Logo */}
         <Link to="/" className="flex items-center space-x-2">
@@ -42,38 +34,29 @@ export function Header() {
           <Link to="/about" className="text-gray-600 hover:text-blog-indigo font-medium">
             About
           </Link>
+          
+          {/* Search Button */}
+          <Button variant="ghost" size="icon" className="text-gray-600">
+            <Search className="h-5 w-5" />
+          </Button>
         </nav>
 
-        {/* Language Selector */}
         <div className="hidden md:flex items-center space-x-4">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="sm" className="flex items-center gap-2">
-                <span>{currentLanguage.flag}</span>
-                <span>{currentLanguage.name}</span>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="bg-white shadow-md">
-              {languages.map((language) => (
-                <DropdownMenuItem 
-                  key={language.code}
-                  onClick={() => setLanguage(language)}
-                  className="flex items-center gap-2 cursor-pointer"
-                >
-                  <span>{language.flag}</span>
-                  <span>{language.name}</span>
-                </DropdownMenuItem>
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
-          
           <Button variant="default" className="bg-blog-indigo hover:bg-blog-indigo/90">
             Subscribe
           </Button>
         </div>
 
         {/* Mobile menu button */}
-        <div className="md:hidden flex items-center">
+        <div className="md:hidden flex items-center space-x-4">
+          <Button 
+            variant="ghost" 
+            size="icon"
+            className="text-gray-600"
+          >
+            <Search className="h-5 w-5" />
+          </Button>
+          
           <Button 
             variant="ghost" 
             size="icon" 
@@ -111,28 +94,6 @@ export function Header() {
             <Link to="/about" className="block py-2 text-gray-600" onClick={toggleMenu}>
               About
             </Link>
-            <div className="py-2">
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="sm" className="flex items-center gap-2 w-full justify-start">
-                    <span>{currentLanguage.flag}</span>
-                    <span>{currentLanguage.name}</span>
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="start" className="bg-white shadow-md">
-                  {languages.map((language) => (
-                    <DropdownMenuItem 
-                      key={language.code}
-                      onClick={() => setLanguage(language)}
-                      className="flex items-center gap-2"
-                    >
-                      <span>{language.flag}</span>
-                      <span>{language.name}</span>
-                    </DropdownMenuItem>
-                  ))}
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
             <Button variant="default" className="w-full mt-2 bg-blog-indigo hover:bg-blog-indigo/90">
               Subscribe
             </Button>

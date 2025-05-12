@@ -4,7 +4,7 @@ import { blogPosts, Post } from "@/data/blogPosts";
 import { FeaturedPost } from "@/components/FeaturedPost";
 import { LanguageBadge } from "@/components/LanguageBadge";
 import { Button } from "@/components/ui/button";
-import { Globe } from "lucide-react";
+import { Globe, Search } from "lucide-react";
 
 const Index = () => {
   const { currentLanguage, setLanguage } = useLanguage();
@@ -158,6 +158,28 @@ const Index = () => {
               </Button>
             </div>
           )}
+        </div>
+      </section>
+      
+      {/* Newsletter Section */}
+      <section className="py-16 bg-blog-lavender/30">
+        <div className="container mx-auto px-4">
+          <div className="max-w-3xl mx-auto text-center">
+            <h2 className="text-3xl font-bold font-playfair mb-4">Stay Updated</h2>
+            <p className="text-gray-700 mb-8">
+              Subscribe to our newsletter to receive the latest posts and updates directly in your inbox.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+              <input
+                type="email"
+                placeholder="Your email address"
+                className="flex-grow px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blog-indigo"
+              />
+              <Button className="bg-blog-indigo hover:bg-blog-indigo/90">
+                Subscribe
+              </Button>
+            </div>
+          </div>
         </div>
       </section>
     </div>

@@ -9,33 +9,21 @@ export type Language = {
 
 export const languages: Language[] = [
   { code: 'en', name: 'English', flag: '🇬🇧' },
-  { code: 'es', name: 'Español', flag: '🇪🇸' },
-  { code: 'fr', name: 'Français', flag: '🇫🇷' },
-  { code: 'de', name: 'Deutsch', flag: '🇩🇪' },
-  { code: 'zh', name: '中文', flag: '🇨🇳' },
-  { code: 'ja', name: '日本語', flag: '🇯🇵' },
-  { code: 'ar', name: 'العربية', flag: '🇸🇦' },
 ];
 
 type LanguageContextType = {
   currentLanguage: Language;
-  setLanguage: (language: Language) => void;
   languages: Language[];
 };
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
 export const LanguageProvider = ({ children }: { children: ReactNode }) => {
-  const [currentLanguage, setCurrentLanguage] = useState<Language>(languages[0]);
-
-  const setLanguage = (language: Language) => {
-    setCurrentLanguage(language);
-    // In a real app, you might also want to store this in localStorage
-    // localStorage.setItem('preferredLanguage', language.code);
-  };
+  // Set default language to English and don't provide methods to change it
+  const currentLanguage = languages[0];
 
   return (
-    <LanguageContext.Provider value={{ currentLanguage, setLanguage, languages }}>
+    <LanguageContext.Provider value={{ currentLanguage, languages }}>
       {children}
     </LanguageContext.Provider>
   );

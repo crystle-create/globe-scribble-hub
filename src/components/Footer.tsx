@@ -1,11 +1,8 @@
 
 import { Cloud, CloudSun } from "lucide-react";
 import { Link } from "react-router-dom";
-import { useLanguage } from "@/contexts/LanguageContext";
 
 export function Footer() {
-  const { currentLanguage } = useLanguage();
-  
   const year = new Date().getFullYear();
   
   return (
@@ -61,9 +58,6 @@ export function Footer() {
             © {year} CloudiBlog. All rights reserved.
           </p>
           <div className="flex items-center space-x-4 mt-4 md:mt-0">
-            <p className="text-gray-500 text-sm">
-              Current language: {currentLanguage.name} {currentLanguage.flag}
-            </p>
             <a href="#" className="text-gray-500 hover:text-blog-indigo text-sm">Privacy</a>
             <a href="#" className="text-gray-500 hover:text-blog-indigo text-sm">Terms</a>
           </div>
