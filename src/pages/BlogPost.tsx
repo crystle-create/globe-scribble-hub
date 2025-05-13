@@ -155,20 +155,19 @@ const BlogPost = () => {
         <header className="mb-8">
           <div className="flex flex-wrap items-center gap-3 mb-4">
             <LanguageBadge 
-              language={postLanguage || { code: post.language, name: post.language, flag: "🌐" }} 
-              isActive={true}
+              language={postLanguage || { code: post.language, name: post.language, flag: "🌐" }}
             />
             <span className="text-gray-500">•</span>
             <span className="text-gray-500 text-sm">
               {translations.publishedIn[currentLanguage.code as keyof typeof translations.publishedIn] || 
-               translations.publishedIn.en} {post.category}
+                translations.publishedIn.en} {post.category}
             </span>
             <span className="text-gray-500">•</span>
             <span className="text-gray-500 text-sm">{post.date}</span>
             <span className="text-gray-500">•</span>
             <span className="text-gray-500 text-sm">
               {post.readTime} {translations.minRead[currentLanguage.code as keyof typeof translations.minRead] || 
-               translations.minRead.en}
+                translations.minRead.en}
             </span>
           </div>
           

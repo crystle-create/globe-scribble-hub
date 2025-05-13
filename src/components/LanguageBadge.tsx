@@ -5,12 +5,15 @@ import { cn } from "@/lib/utils";
 
 interface LanguageBadgeProps {
   language: Language;
+  isActive?: boolean;
+  onClick?: () => void;
   size?: "sm" | "md" | "lg";
 }
 
-// Simplified to be just a display component, no more selection functionality
 export function LanguageBadge({ 
   language,
+  isActive = false,
+  onClick,
   size = "md"
 }: LanguageBadgeProps) {
   return (
@@ -23,6 +26,7 @@ export function LanguageBadge({
         size === "md" && "px-3 py-1",
         size === "lg" && "px-4 py-1.5 text-base"
       )}
+      onClick={onClick}
     >
       <span>{language.flag}</span>
       <span>{language.name}</span>

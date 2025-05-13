@@ -95,16 +95,12 @@ const Index = () => {
           <div className="flex flex-wrap justify-center gap-3">
             <LanguageBadge
               language={{ code: "", name: translations.allLanguages[currentLanguage.code as keyof typeof translations.allLanguages] || translations.allLanguages.en, flag: "🌐" }}
-              isActive={filter === null}
-              onClick={() => setFilter(null)}
               size="lg"
             />
             {languages.map((language) => (
               <LanguageBadge
                 key={language.code}
                 language={language}
-                isActive={filter === language.code}
-                onClick={() => setFilter(language.code)}
                 size="lg"
               />
             ))}

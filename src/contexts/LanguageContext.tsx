@@ -6,8 +6,13 @@ export type Language = {
   flag: string;
 };
 
-// Just keeping English as the only language
-const defaultLanguage: Language = { code: 'en', name: 'English', flag: '🇬🇧' };
+// Define languages array for reference in pages that need it
+export const languages: Language[] = [
+  { code: 'en', name: 'English', flag: '🇬🇧' }
+  // We're only keeping English as the default language
+];
+
+const defaultLanguage: Language = languages[0];
 
 type LanguageContextType = {
   currentLanguage: Language;
