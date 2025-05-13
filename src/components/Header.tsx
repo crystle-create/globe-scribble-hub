@@ -21,11 +21,11 @@ export function Header() {
   return (
     <header className="w-full bg-white shadow-sm sticky top-0 z-10">
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-        {/* Logo */}
+        {/* Logo with sun now on right side of cloud */}
         <Link to="/" className="flex items-center space-x-2">
           <div className="relative">
-            <Sun className="h-5 w-5 text-yellow-300 absolute top-0 left-0" />
             <Cloud className="h-8 w-8 text-blue-400" />
+            <Sun className="h-5 w-5 text-yellow-300 absolute -right-1 top-0" />
           </div>
           <span className="text-2xl font-bold font-playfair text-gray-800">CloudiBlog</span>
         </Link>

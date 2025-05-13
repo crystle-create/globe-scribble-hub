@@ -4,7 +4,7 @@ import { blogPosts, Post } from "@/data/blogPosts";
 import { FeaturedPost } from "@/components/FeaturedPost";
 import { LanguageBadge } from "@/components/LanguageBadge";
 import { Button } from "@/components/ui/button";
-import { Globe, Search } from "lucide-react";
+import { Search } from "lucide-react";
 
 const Index = () => {
   const { currentLanguage } = useLanguage();
@@ -111,19 +111,11 @@ const Index = () => {
       {/* Featured Posts */}
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between mb-10">
+          <div className="mb-10">
             <h2 className="text-3xl font-bold font-playfair">
               {translations.featuredPosts[currentLanguage.code as keyof typeof translations.featuredPosts] || 
                translations.featuredPosts.en}
             </h2>
-            
-            <div className="flex items-center">
-              <Globe className="h-5 w-5 text-blog-indigo mr-2" />
-              <span className="text-sm font-medium text-gray-500">
-                {translations.browseByLanguage[currentLanguage.code as keyof typeof translations.browseByLanguage] || 
-                 translations.browseByLanguage.en}
-              </span>
-            </div>
           </div>
           
           {/* Grid of posts */}
