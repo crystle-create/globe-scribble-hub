@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Globe, Search } from "lucide-react";
 
 const Index = () => {
-  const { currentLanguage, setLanguage } = useLanguage();
+  const { currentLanguage } = useLanguage();
   const [filter, setFilter] = useState<string | null>(null);
   const [filteredPosts, setFilteredPosts] = useState<Post[]>([]);
   
@@ -104,10 +104,7 @@ const Index = () => {
                 key={language.code}
                 language={language}
                 isActive={filter === language.code}
-                onClick={() => {
-                  setFilter(language.code);
-                  setLanguage(language);
-                }}
+                onClick={() => setFilter(language.code)}
                 size="lg"
               />
             ))}

@@ -1,14 +1,20 @@
 
 import { Button } from "@/components/ui/button";
-import { Cloud, CloudSun, Search } from "lucide-react";
+import { Cloud, CloudSun, Search, User } from "lucide-react";
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
+import { SearchDialog } from "./SearchDialog";
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
+
+  const openSearch = () => {
+    setIsSearchOpen(true);
   };
 
   return (
@@ -36,15 +42,20 @@ export function Header() {
           </Link>
           
           {/* Search Button */}
-          <Button variant="ghost" size="icon" className="text-gray-600">
+          <Button variant="ghost" size="icon" className="text-gray-600" onClick={openSearch}>
             <Search className="h-5 w-5" />
           </Button>
         </nav>
 
         <div className="hidden md:flex items-center space-x-4">
-          <Button variant="default" className="bg-blog-indigo hover:bg-blog-indigo/90">
-            Subscribe
-          </Button>
+          <Link to="/login">
+            <Button variant="outline">Log In</Button>
+          </Link>
+          <Link to="/signup">
+            <Button variant="default" className="bg-blog-indigo hover:bg-blog-indigo/90">
+              Sign Up
+            </Button>
+          </Link>
         </div>
 
         {/* Mobile menu button */}
@@ -53,6 +64,7 @@ export function Header() {
             variant="ghost" 
             size="icon"
             className="text-gray-600"
+            onClick={openSearch}
           >
             <Search className="h-5 w-5" />
           </Button>
@@ -94,12 +106,18 @@ export function Header() {
             <Link to="/about" className="block py-2 text-gray-600" onClick={toggleMenu}>
               About
             </Link>
-            <Button variant="default" className="w-full mt-2 bg-blog-indigo hover:bg-blog-indigo/90">
-              Subscribe
-            </Button>
+            <Link to="/login" className="block py-2 text-gray-600" onClick={toggleMenu}>
+              Log In
+            </Link>
+            <Link to="/signup" className="block py-2 text-gray-600" onClick={toggleMenu}>
+              Sign Up
+            </Link>
           </div>
         </div>
       )}
+
+      {/* Search Dialog */}
+      <SearchDialog open={isSearchOpen} onOpenChange={setIsSearchOpen} />
     </header>
   );
 }

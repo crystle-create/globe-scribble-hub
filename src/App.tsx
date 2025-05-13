@@ -11,6 +11,8 @@ import Categories from "./pages/Categories";
 import About from "./pages/About";
 import NotFound from "./pages/NotFound";
 import Layout from "./components/Layout";
+import Login from "./pages/Login";
+import SignUp from "./pages/SignUp";
 
 const queryClient = new QueryClient();
 
@@ -27,6 +29,8 @@ const App = () => (
               <Route path="/post/:id" element={<BlogPost />} />
               <Route path="/categories" element={<Categories />} />
               <Route path="/about" element={<About />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<SignUp />} />
               <Route path="*" element={<NotFound />} />
             </Route>
           </Routes>
