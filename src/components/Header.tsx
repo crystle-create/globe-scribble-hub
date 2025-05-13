@@ -1,6 +1,6 @@
 
 import { Button } from "@/components/ui/button";
-import { Cloud, CloudSun, Search } from "lucide-react";
+import { Cloud, Sun, Search } from "lucide-react";
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import { SearchDialog } from "./SearchDialog";
@@ -24,8 +24,8 @@ export function Header() {
         {/* Logo */}
         <Link to="/" className="flex items-center space-x-2">
           <div className="relative">
+            <Sun className="h-5 w-5 text-yellow-300 absolute top-0 left-0" />
             <Cloud className="h-8 w-8 text-blue-400" />
-            <CloudSun className="h-4 w-4 text-blue-200 absolute -top-1 -right-1" />
           </div>
           <span className="text-2xl font-bold font-playfair text-gray-800">CloudiBlog</span>
         </Link>

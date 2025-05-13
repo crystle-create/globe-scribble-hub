@@ -4,7 +4,7 @@ import { useAuth } from "@/hooks/useAdmin";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Eye, EyeOff, X } from "lucide-react";
+import { Eye, EyeOff } from "lucide-react";
 
 import {
   Dialog,
@@ -87,15 +87,6 @@ export function AuthModals({ isOpen, onClose, initialMode = "login" }: AuthModal
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <DialogContent className="sm:max-w-md rounded-lg border-none bg-gradient-to-br from-sky-50 to-blue-100 p-6">
         <DialogHeader className="relative">
-          <Button
-            variant="ghost"
-            size="icon"
-            className="absolute right-0 top-0 rounded-full h-7 w-7"
-            onClick={onClose}
-          >
-            <X className="h-4 w-4" />
-            <span className="sr-only">Close</span>
-          </Button>
           <DialogTitle className="text-center font-playfair text-2xl text-gray-800">
             {mode === "login" ? "Welcome Back" : "Join CloudiBlog"}
           </DialogTitle>

@@ -1,5 +1,4 @@
-
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, ReactNode } from 'react';
 
 export type Language = {
   code: string;
@@ -7,23 +6,18 @@ export type Language = {
   flag: string;
 };
 
-export const languages: Language[] = [
-  { code: 'en', name: 'English', flag: '🇬🇧' },
-];
+// Just keeping English as the only language
+const defaultLanguage: Language = { code: 'en', name: 'English', flag: '🇬🇧' };
 
 type LanguageContextType = {
   currentLanguage: Language;
-  languages: Language[];
 };
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
 export const LanguageProvider = ({ children }: { children: ReactNode }) => {
-  // Set default language to English and don't provide methods to change it
-  const currentLanguage = languages[0];
-
   return (
-    <LanguageContext.Provider value={{ currentLanguage, languages }}>
+    <LanguageContext.Provider value={{ currentLanguage: defaultLanguage }}>
       {children}
     </LanguageContext.Provider>
   );
