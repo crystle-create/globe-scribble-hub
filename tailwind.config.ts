@@ -65,10 +65,10 @@ export default {
 				},
 				// Custom colors for our blog
 				blog: {
-					indigo: '#4F46E5',  
-					amber: '#F59E0B',
-					lavender: '#C7D2FE',
-					dark: '#1F2937'
+					indigo: '#60A5FA',  // Changed to a lighter blue
+					amber: '#93C5FD',    // Changed to a light blue
+					lavender: '#DBEAFE', // Changed to very light blue
+					dark: '#3B82F6'      // Changed to medium blue
 				}
 			},
 			fontFamily: {
@@ -107,9 +107,9 @@ export default {
 					css: {
 						maxWidth: 'none',
 						a: {
-							color: '#4F46E5',
+							color: '#3B82F6', // Changed to medium blue
 							'&:hover': {
-								color: '#6366F1',
+								color: '#2563EB', // Changed to slightly darker blue
 							},
 						},
 					},

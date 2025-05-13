@@ -1,9 +1,10 @@
 
 import { Button } from "@/components/ui/button";
-import { Cloud, CloudSun, Search, User } from "lucide-react";
+import { Cloud, CloudSun, Search } from "lucide-react";
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import { SearchDialog } from "./SearchDialog";
+import { AuthButtons } from "./auth/AuthButtons";
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -23,21 +24,21 @@ export function Header() {
         {/* Logo */}
         <Link to="/" className="flex items-center space-x-2">
           <div className="relative">
-            <Cloud className="h-8 w-8 text-blog-indigo" />
-            <CloudSun className="h-4 w-4 text-blog-amber absolute -top-1 -right-1" />
+            <Cloud className="h-8 w-8 text-blue-400" />
+            <CloudSun className="h-4 w-4 text-blue-200 absolute -top-1 -right-1" />
           </div>
-          <span className="text-2xl font-bold font-playfair text-blog-dark">CloudiBlog</span>
+          <span className="text-2xl font-bold font-playfair text-gray-800">CloudiBlog</span>
         </Link>
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-8">
-          <Link to="/" className="text-gray-600 hover:text-blog-indigo font-medium">
+          <Link to="/" className="text-gray-600 hover:text-blue-500 font-medium">
             Home
           </Link>
-          <Link to="/categories" className="text-gray-600 hover:text-blog-indigo font-medium">
+          <Link to="/categories" className="text-gray-600 hover:text-blue-500 font-medium">
             Categories
           </Link>
-          <Link to="/about" className="text-gray-600 hover:text-blog-indigo font-medium">
+          <Link to="/about" className="text-gray-600 hover:text-blue-500 font-medium">
             About
           </Link>
           
@@ -47,15 +48,8 @@ export function Header() {
           </Button>
         </nav>
 
-        <div className="hidden md:flex items-center space-x-4">
-          <Link to="/login">
-            <Button variant="outline">Log In</Button>
-          </Link>
-          <Link to="/signup">
-            <Button variant="default" className="bg-blog-indigo hover:bg-blog-indigo/90">
-              Sign Up
-            </Button>
-          </Link>
+        <div className="hidden md:block">
+          <AuthButtons />
         </div>
 
         {/* Mobile menu button */}
@@ -68,6 +62,10 @@ export function Header() {
           >
             <Search className="h-5 w-5" />
           </Button>
+
+          <div className="md:hidden">
+            <AuthButtons />
+          </div>
           
           <Button 
             variant="ghost" 
@@ -105,12 +103,6 @@ export function Header() {
             </Link>
             <Link to="/about" className="block py-2 text-gray-600" onClick={toggleMenu}>
               About
-            </Link>
-            <Link to="/login" className="block py-2 text-gray-600" onClick={toggleMenu}>
-              Log In
-            </Link>
-            <Link to="/signup" className="block py-2 text-gray-600" onClick={toggleMenu}>
-              Sign Up
             </Link>
           </div>
         </div>

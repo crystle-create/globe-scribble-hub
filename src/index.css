@@ -16,16 +16,16 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 246 83.3% 58.8%;
+    --primary: 210 100% 50%;
     --primary-foreground: 210 40% 98%;
 
-    --secondary: 240 24% 95%;
+    --secondary: 210 40% 96.1%;
     --secondary-foreground: 222.2 47.4% 11.2%;
 
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
 
-    --accent: 243 75% 88%;
+    --accent: 210 100% 98%;
     --accent-foreground: 222.2 47.4% 11.2%;
 
     --destructive: 0 84.2% 60.2%;
@@ -33,17 +33,17 @@
 
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 246 83.3% 58.8%;
+    --ring: 210 100% 50%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
 
-    --sidebar-background: 0 0% 98%;
+    --sidebar-background: 210 50% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
     --sidebar-primary: 240 5.9% 10%;
     --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent: 210 50% 95.9%;
     --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
+    --sidebar-border: 210 50% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
@@ -57,7 +57,7 @@
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 246 83.3% 58.8%;
+    --primary: 210 100% 50%;
     --primary-foreground: 210 40% 98%;
 
     --secondary: 217.2 32.6% 17.5%;
@@ -66,7 +66,7 @@
     --muted: 217.2 32.6% 17.5%;
     --muted-foreground: 215 20.2% 65.1%;
 
-    --accent: 243 75% 88%;
+    --accent: 210 100% 20%;
     --accent-foreground: 210 40% 98%;
 
     --destructive: 0 62.8% 30.6%;
@@ -74,7 +74,7 @@
 
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
-    --ring: 246 83.3% 58.8%;
+    --ring: 210 100% 50%;
     
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
@@ -102,5 +102,19 @@
 }
 
 .blog-content {
-  @apply prose prose-lg max-w-none prose-headings:font-playfair prose-p:text-gray-800 prose-a:text-blog-indigo;
+  @apply prose prose-lg max-w-none prose-headings:font-playfair prose-p:text-gray-800 prose-a:text-blue-500;
 }
+
+/* Aesthetic UI Classes */
+.glass-card {
+  @apply bg-white/70 backdrop-blur-sm border border-blue-100 rounded-xl shadow-sm;
+}
+
+.blue-gradient {
+  @apply bg-gradient-to-br from-blue-50 to-blue-100;
+}
+
+.form-input-focus {
+  @apply focus:ring-2 focus:ring-blue-200 focus:border-blue-300;
+}
+
