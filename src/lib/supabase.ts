@@ -5,7 +5,7 @@ import { createClient } from '@supabase/supabase-js';
 const supabaseUrl = 'https://your-supabase-project-id.supabase.co';
 const supabaseAnonKey = 'your-supabase-anon-key';
 
-if (!supabaseUrl === 'https://your-supabase-project-id.supabase.co' || 
+if (supabaseUrl === 'https://your-supabase-project-id.supabase.co' || 
     supabaseAnonKey === 'your-supabase-anon-key') {
   console.error('Please update your Supabase credentials in src/lib/supabase.ts');
 }
