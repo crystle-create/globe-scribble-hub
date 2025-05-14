@@ -4,9 +4,9 @@ import { useNavigate, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
-import { useToast } from "@/components/ui/use-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { useAuth } from "@/hooks/useAdmin";
 import { 
   Form,
   FormControl,
@@ -30,8 +30,7 @@ type FormValues = z.infer<typeof formSchema>;
 
 export default function SignUp() {
   const navigate = useNavigate();
-  const { toast } = useToast();
-  const [isLoading, setIsLoading] = useState(false);
+  const { signUp, isLoading } = useAuth();
   
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -44,31 +43,7 @@ export default function SignUp() {
   });
 
   const onSubmit = async (data: FormValues) => {
-    setIsLoading(true);
-    
-    // Simulate registration
-    try {
-      // Mock signup - in a real app, this would call an API
-      console.log("Signup attempt with:", data);
-      
-      // Simulate successful signup
-      setTimeout(() => {
-        toast({
-          title: "Account created",
-          description: "Welcome to CloudiBlog!",
-        });
-        navigate("/");
-        setIsLoading(false);
-      }, 1500);
-    } catch (error) {
-      console.error("Signup error:", error);
-      toast({
-        title: "Registration failed",
-        description: "Something went wrong. Please try again.",
-        variant: "destructive",
-      });
-      setIsLoading(false);
-    }
+    await signUp(data.email, data.password);
   };
 
   return (

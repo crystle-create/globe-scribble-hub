@@ -1,10 +1,19 @@
 
 import { useState, useEffect, createContext, useContext } from 'react';
 import { useToast } from "@/hooks/use-toast";
+import { auth, isAdminEmail } from "@/lib/firebase";
+import { 
+  signInWithEmailAndPassword, 
+  createUserWithEmailAndPassword,
+  signOut as firebaseSignOut,
+  onAuthStateChanged,
+  User as FirebaseUser
+} from "firebase/auth";
+import { useNavigate } from "react-router-dom";
 
 type User = {
   id: string;
-  email: string;
+  email: string | null;
   isAdmin: boolean;
 } | null;
 
@@ -23,58 +32,47 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User>(null);
   const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
+  const navigate = useNavigate();
 
-  // Simulate checking for stored user on page load
   useEffect(() => {
-    const checkAuth = () => {
-      const storedUser = localStorage.getItem('cloudiblog-user');
-      if (storedUser) {
-        try {
-          const parsedUser = JSON.parse(storedUser);
-          setUser(parsedUser);
-        } catch (error) {
-          console.error("Failed to parse stored user", error);
-          localStorage.removeItem('cloudiblog-user');
+    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+      if (firebaseUser) {
+        const userData = {
+          id: firebaseUser.uid,
+          email: firebaseUser.email,
+          isAdmin: isAdminEmail(firebaseUser.email)
+        };
+        setUser(userData);
+        
+        // Redirect admin to dashboard
+        if (userData.isAdmin) {
+          navigate("/admin/dashboard");
         }
+      } else {
+        setUser(null);
       }
       setIsLoading(false);
-    };
+    });
 
-    // Short timeout to simulate network request
-    const timer = setTimeout(checkAuth, 500);
-    return () => clearTimeout(timer);
-  }, []);
+    return () => unsubscribe();
+  }, [navigate]);
 
   const signIn = async (email: string, password: string): Promise<void> => {
     setIsLoading(true);
     
     try {
-      // In a real app, this would call an authentication API
-      // For demo, we simulate a successful login after a delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // Simple validation (in real app, this would be done securely on the backend)
-      if (password.length < 6) {
-        throw new Error("Invalid credentials");
-      }
-      
-      const newUser = {
-        id: `user_${Date.now()}`,
-        email,
-        isAdmin: email.includes('admin'),  // Simple demo rule: emails with "admin" are admins
-      };
-
-      setUser(newUser);
-      localStorage.setItem('cloudiblog-user', JSON.stringify(newUser));
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const isAdmin = isAdminEmail(userCredential.user.email);
       
       toast({
         title: "Welcome back!",
-        description: `You've successfully signed in as ${email}`,
+        description: `You've successfully signed in${isAdmin ? " as admin" : ""}`,
       });
+      
     } catch (error) {
       toast({
         title: "Authentication failed",
-        description: error instanceof Error ? error.message : "Please check your credentials and try again",
+        description: "Please check your credentials and try again",
         variant: "destructive",
       });
     } finally {
@@ -86,31 +84,16 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setIsLoading(true);
     
     try {
-      // In a real app, this would call an API to create a user
-      // For demo, we simulate a successful signup after a delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      if (password.length < 6) {
-        throw new Error("Password must be at least 6 characters");
-      }
-      
-      const newUser = {
-        id: `user_${Date.now()}`,
-        email,
-        isAdmin: false,  // New users are never admins by default
-      };
-
-      setUser(newUser);
-      localStorage.setItem('cloudiblog-user', JSON.stringify(newUser));
+      await createUserWithEmailAndPassword(auth, email, password);
       
       toast({
         title: "Account created!",
-        description: `Welcome to CloudiBlog, ${email}`,
+        description: `Welcome to CloudiBlog`,
       });
     } catch (error) {
       toast({
         title: "Sign up failed",
-        description: error instanceof Error ? error.message : "Please try again with different credentials",
+        description: "Please try again with different credentials",
         variant: "destructive",
       });
     } finally {
@@ -119,11 +102,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const signOut = () => {
-    localStorage.removeItem('cloudiblog-user');
-    setUser(null);
-    toast({
-      title: "Signed out",
-      description: "You've been successfully signed out",
+    firebaseSignOut(auth).then(() => {
+      setUser(null);
+      toast({
+        title: "Signed out",
+        description: "You've been successfully signed out",
+      });
+      navigate("/");
     });
   };
 
@@ -151,7 +136,6 @@ export const useAuth = () => {
   return context;
 };
 
-// Legacy useAdmin hook for compatibility
 export const useAdmin = () => {
   const { isAdmin, isLoading } = useAuth();
   return { isAdmin, isLoading };

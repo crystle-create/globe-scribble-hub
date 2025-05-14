@@ -14,6 +14,14 @@ import NotFound from "./pages/NotFound";
 import Layout from "./components/Layout";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
+import ProtectedRoute from "./components/auth/ProtectedRoute";
+
+// Admin pages
+import AdminLayout from "./pages/admin/AdminLayout";
+import AdminDashboard from "./pages/admin/Dashboard";
+import AdminPosts from "./pages/admin/Posts";
+import PostEditor from "./pages/admin/PostEditor";
+import AdminSettings from "./pages/admin/Settings";
 
 const queryClient = new QueryClient();
 
@@ -21,12 +29,13 @@ const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <LanguageProvider>
-        <AuthProvider>
-          <BrowserRouter>
+        <BrowserRouter>
+          <AuthProvider>
             <TooltipProvider>
               <Toaster />
               <Sonner />
               <Routes>
+                {/* Main site routes */}
                 <Route element={<Layout />}>
                   <Route path="/" element={<Index />} />
                   <Route path="/post/:id" element={<BlogPost />} />
@@ -34,12 +43,24 @@ const App = () => {
                   <Route path="/about" element={<About />} />
                   <Route path="/login" element={<Login />} />
                   <Route path="/signup" element={<SignUp />} />
-                  <Route path="*" element={<NotFound />} />
                 </Route>
+                
+                {/* Admin routes - protected and require admin */}
+                <Route element={<ProtectedRoute requireAdmin />}>
+                  <Route element={<AdminLayout />}>
+                    <Route path="/admin/dashboard" element={<AdminDashboard />} />
+                    <Route path="/admin/posts" element={<AdminPosts />} />
+                    <Route path="/admin/posts/new" element={<PostEditor />} />
+                    <Route path="/admin/posts/edit/:id" element={<PostEditor />} />
+                    <Route path="/admin/settings" element={<AdminSettings />} />
+                  </Route>
+                </Route>
+                
+                <Route path="*" element={<NotFound />} />
               </Routes>
             </TooltipProvider>
-          </BrowserRouter>
-        </AuthProvider>
+          </AuthProvider>
+        </BrowserRouter>
       </LanguageProvider>
     </QueryClientProvider>
   );
