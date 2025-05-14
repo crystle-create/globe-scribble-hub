@@ -85,159 +85,165 @@ export function AuthModals({ isOpen, onClose, initialMode = "login" }: AuthModal
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="sm:max-w-md rounded-lg border-none bg-gradient-to-br from-sky-50 to-blue-100 p-6">
+      <DialogContent className="sm:max-w-md rounded-lg border-none bg-gradient-to-br from-sky-50 to-blue-100 p-6 shadow-lg animate-slide-up">
         <DialogHeader className="relative">
           <DialogTitle className="text-center font-playfair text-2xl text-gray-800">
             {mode === "login" ? "Welcome Back" : "Join CloudiBlog"}
           </DialogTitle>
         </DialogHeader>
 
-        {mode === "login" ? (
-          <Form {...loginForm}>
-            <form onSubmit={loginForm.handleSubmit(handleLoginSubmit)} className="space-y-4">
-              <FormField
-                control={loginForm.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-gray-700">Email</FormLabel>
-                    <FormControl>
-                      <Input 
-                        placeholder="your.email@example.com" 
-                        {...field} 
-                        className="bg-white/70 border-blue-200 focus-visible:ring-blue-300" 
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              
-              <FormField
-                control={loginForm.control}
-                name="password"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-gray-700">Password</FormLabel>
-                    <FormControl>
-                      <div className="relative">
-                        <Input
-                          type={showPassword ? "text" : "password"}
-                          placeholder="••••••••"
-                          {...field}
-                          className="bg-white/70 border-blue-200 focus-visible:ring-blue-300 pr-10"
+        <div className={`transition-all duration-300 ${mode === 'login' ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-[-30px] hidden'}`}>
+          {mode === "login" && (
+            <Form {...loginForm}>
+              <form onSubmit={loginForm.handleSubmit(handleLoginSubmit)} className="space-y-4">
+                <FormField
+                  control={loginForm.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-gray-700">Email</FormLabel>
+                      <FormControl>
+                        <Input 
+                          placeholder="your.email@example.com" 
+                          {...field} 
+                          className="bg-white/70 border-blue-200 focus-visible:ring-blue-300 transition-all duration-300 focus:translate-y-[-2px]" 
                         />
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          size="icon"
-                          className="absolute right-0 top-0 h-full px-3 text-gray-500"
-                          onClick={() => setShowPassword(!showPassword)}
-                        >
-                          {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                        </Button>
-                      </div>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              
-              <Button
-                type="submit"
-                className="w-full bg-blue-400 hover:bg-blue-500 text-white font-medium"
-                disabled={isLoading}
-              >
-                {isLoading ? "Logging in..." : "Log In"}
-              </Button>
-            </form>
-          </Form>
-        ) : (
-          <Form {...signupForm}>
-            <form onSubmit={signupForm.handleSubmit(handleSignupSubmit)} className="space-y-4">
-              <FormField
-                control={signupForm.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-gray-700">Full Name</FormLabel>
-                    <FormControl>
-                      <Input 
-                        placeholder="John Doe" 
-                        {...field} 
-                        className="bg-white/70 border-blue-200 focus-visible:ring-blue-300" 
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              
-              <FormField
-                control={signupForm.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-gray-700">Email</FormLabel>
-                    <FormControl>
-                      <Input 
-                        placeholder="your.email@example.com" 
-                        {...field} 
-                        className="bg-white/70 border-blue-200 focus-visible:ring-blue-300" 
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              
-              <FormField
-                control={signupForm.control}
-                name="password"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-gray-700">Password</FormLabel>
-                    <FormControl>
-                      <div className="relative">
-                        <Input
-                          type={showPassword ? "text" : "password"}
-                          placeholder="••••••••"
-                          {...field}
-                          className="bg-white/70 border-blue-200 focus-visible:ring-blue-300 pr-10"
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                
+                <FormField
+                  control={loginForm.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-gray-700">Password</FormLabel>
+                      <FormControl>
+                        <div className="relative">
+                          <Input
+                            type={showPassword ? "text" : "password"}
+                            placeholder="••••••••"
+                            {...field}
+                            className="bg-white/70 border-blue-200 focus-visible:ring-blue-300 pr-10 transition-all duration-300 focus:translate-y-[-2px]"
+                          />
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="icon"
+                            className="absolute right-0 top-0 h-full px-3 text-gray-500 transition-colors duration-300 hover:text-gray-800"
+                            onClick={() => setShowPassword(!showPassword)}
+                          >
+                            {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                          </Button>
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                
+                <Button
+                  type="submit"
+                  className="w-full bg-blue-400 hover:bg-blue-500 text-white font-medium transition-all duration-300 hover:shadow-md"
+                  disabled={isLoading}
+                >
+                  {isLoading ? "Logging in..." : "Log In"}
+                </Button>
+              </form>
+            </Form>
+          )}
+        </div>
+
+        <div className={`transition-all duration-300 ${mode === 'signup' ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-[30px] hidden'}`}>
+          {mode === "signup" && (
+            <Form {...signupForm}>
+              <form onSubmit={signupForm.handleSubmit(handleSignupSubmit)} className="space-y-4">
+                <FormField
+                  control={signupForm.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-gray-700">Full Name</FormLabel>
+                      <FormControl>
+                        <Input 
+                          placeholder="John Doe" 
+                          {...field} 
+                          className="bg-white/70 border-blue-200 focus-visible:ring-blue-300 transition-all duration-300 focus:translate-y-[-2px]" 
                         />
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          size="icon"
-                          className="absolute right-0 top-0 h-full px-3 text-gray-500"
-                          onClick={() => setShowPassword(!showPassword)}
-                        >
-                          {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                        </Button>
-                      </div>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              
-              <Button
-                type="submit"
-                className="w-full bg-blue-400 hover:bg-blue-500 text-white font-medium"
-                disabled={isLoading}
-              >
-                {isLoading ? "Creating account..." : "Sign Up"}
-              </Button>
-            </form>
-          </Form>
-        )}
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                
+                <FormField
+                  control={signupForm.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-gray-700">Email</FormLabel>
+                      <FormControl>
+                        <Input 
+                          placeholder="your.email@example.com" 
+                          {...field} 
+                          className="bg-white/70 border-blue-200 focus-visible:ring-blue-300 transition-all duration-300 focus:translate-y-[-2px]" 
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                
+                <FormField
+                  control={signupForm.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-gray-700">Password</FormLabel>
+                      <FormControl>
+                        <div className="relative">
+                          <Input
+                            type={showPassword ? "text" : "password"}
+                            placeholder="••••••••"
+                            {...field}
+                            className="bg-white/70 border-blue-200 focus-visible:ring-blue-300 pr-10 transition-all duration-300 focus:translate-y-[-2px]"
+                          />
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="icon"
+                            className="absolute right-0 top-0 h-full px-3 text-gray-500 transition-colors duration-300 hover:text-gray-800"
+                            onClick={() => setShowPassword(!showPassword)}
+                          >
+                            {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                          </Button>
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                
+                <Button
+                  type="submit"
+                  className="w-full bg-blue-400 hover:bg-blue-500 text-white font-medium transition-all duration-300 hover:shadow-md"
+                  disabled={isLoading}
+                >
+                  {isLoading ? "Creating account..." : "Sign Up"}
+                </Button>
+              </form>
+            </Form>
+          )}
+        </div>
         
         <div className="mt-4 text-center text-sm">
           <p className="text-gray-600">
             {mode === "login" ? "Don't have an account?" : "Already have an account?"}
             <Button 
               variant="link" 
-              className="text-blue-500 font-medium p-0 h-auto ml-1" 
+              className="text-blue-500 font-medium p-0 h-auto ml-1 transition-all duration-300 hover:text-blue-700" 
               onClick={toggleMode}
             >
               {mode === "login" ? "Sign up" : "Log in"}

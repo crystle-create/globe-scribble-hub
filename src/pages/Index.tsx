@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { useLanguage, languages } from "@/contexts/LanguageContext";
 import { blogPosts, Post } from "@/data/blogPosts";
@@ -5,11 +6,16 @@ import { FeaturedPost } from "@/components/FeaturedPost";
 import { LanguageBadge } from "@/components/LanguageBadge";
 import { Button } from "@/components/ui/button";
 import { Search } from "lucide-react";
+import { useFadeInAnimation, useStaggeredAnimation } from "@/lib/animation";
 
 const Index = () => {
   const { currentLanguage } = useLanguage();
   const [filter, setFilter] = useState<string | null>(null);
   const [filteredPosts, setFilteredPosts] = useState<Post[]>([]);
+  
+  // Apply animations
+  useFadeInAnimation();
+  useStaggeredAnimation('.posts-grid', '.featured-post', 0.1);
   
   // Apply filters when language or filter changes
   useEffect(() => {
@@ -81,7 +87,7 @@ const Index = () => {
     <div className="flex flex-col min-h-screen">
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-blog-lavender to-white py-20">
-        <div className="container mx-auto px-4 text-center">
+        <div className="container mx-auto px-4 text-center fade-in-element">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold font-playfair mb-6">
             {translations.hero.title[currentLanguage.code as keyof typeof translations.hero.title] || 
              translations.hero.title.en}
@@ -92,7 +98,7 @@ const Index = () => {
           </p>
           
           {/* Language Selector */}
-          <div className="flex flex-wrap justify-center gap-3">
+          <div className="flex flex-wrap justify-center gap-3 fade-in-element" style={{ transitionDelay: '0.2s' }}>
             <LanguageBadge
               language={{ code: "", name: translations.allLanguages[currentLanguage.code as keyof typeof translations.allLanguages] || translations.allLanguages.en, flag: "🌐" }}
               size="lg"
@@ -111,7 +117,7 @@ const Index = () => {
       {/* Featured Posts */}
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
-          <div className="mb-10">
+          <div className="mb-10 fade-in-element">
             <h2 className="text-3xl font-bold font-playfair">
               {translations.featuredPosts[currentLanguage.code as keyof typeof translations.featuredPosts] || 
                translations.featuredPosts.en}
@@ -120,23 +126,27 @@ const Index = () => {
           
           {/* Grid of posts */}
           {filteredPosts.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 posts-grid">
               {/* First post is larger */}
               {filteredPosts.length > 0 && (
-                <FeaturedPost post={filteredPosts[0]} isLarge={true} />
+                <div className="featured-post">
+                  <FeaturedPost post={filteredPosts[0]} isLarge={true} />
+                </div>
               )}
               
               {/* Rest of the posts */}
               {filteredPosts.slice(1, 6).map((post) => (
-                <FeaturedPost key={post.id} post={post} />
+                <div key={post.id} className="featured-post">
+                  <FeaturedPost post={post} />
+                </div>
               ))}
             </div>
           ) : (
-            <div className="text-center py-12">
+            <div className="text-center py-12 fade-in-element">
               <p className="text-gray-500 text-lg">No posts available in this language yet.</p>
               <Button 
                 variant="outline" 
-                className="mt-4"
+                className="mt-4 transition-all duration-300 hover:scale-105"
                 onClick={() => setFilter(null)}
               >
                 Show all posts
@@ -149,7 +159,7 @@ const Index = () => {
       {/* Newsletter Section */}
       <section className="py-16 bg-blog-lavender/30">
         <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto text-center">
+          <div className="max-w-3xl mx-auto text-center fade-in-element">
             <h2 className="text-3xl font-bold font-playfair mb-4">Stay Updated</h2>
             <p className="text-gray-700 mb-8">
               Subscribe to our newsletter to receive the latest posts and updates directly in your inbox.
@@ -158,9 +168,9 @@ const Index = () => {
               <input
                 type="email"
                 placeholder="Your email address"
-                className="flex-grow px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blog-indigo"
+                className="flex-grow px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blog-indigo transition-all duration-300"
               />
-              <Button className="bg-blog-indigo hover:bg-blog-indigo/90">
+              <Button className="bg-blog-indigo hover:bg-blog-indigo/90 transition-all duration-300 hover:scale-105">
                 Subscribe
               </Button>
             </div>

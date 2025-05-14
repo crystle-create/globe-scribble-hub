@@ -46,14 +46,14 @@ export function FeaturedPost({ post, isLarge = false }: FeaturedPostProps) {
   return (
     <div 
       className={cn(
-        "group relative overflow-hidden rounded-lg shadow-md transition-transform duration-300 hover:-translate-y-1",
+        "group relative overflow-hidden rounded-lg shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-lg",
         isLarge ? "col-span-full lg:col-span-2" : ""
       )}
     >
       <Link to={`/post/${post.id}`} className="block h-full">
         <div className="relative w-full">
           {/* Language badge */}
-          <div className="absolute top-4 right-4 z-10 bg-white/80 dark:bg-black/80 px-2 py-1 rounded font-medium text-xs uppercase">
+          <div className="absolute top-4 right-4 z-10 bg-white/80 dark:bg-black/80 px-2 py-1 rounded font-medium text-xs uppercase transition-all duration-300 hover:bg-white">
             {post.language === currentLanguage.code ? 
               `${currentLanguage.flag} ${currentLanguage.name}` : 
               languages.find(l => l.code === post.language)?.flag || post.language}
@@ -69,22 +69,26 @@ export function FeaturedPost({ post, isLarge = false }: FeaturedPostProps) {
             <img
               src={post.image}
               alt={post.title}
-              className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+              className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
             />
           </div>
           
           {/* Content */}
           <div className="p-5 bg-white dark:bg-gray-800">
             <div className="flex items-center gap-2 mb-2 text-sm text-muted-foreground">
-              <span className="font-medium uppercase text-blog-amber">{post.category}</span>
+              <span className="font-medium uppercase text-blog-amber">
+                {post.category}
+              </span>
               <span>•</span>
               <span>{post.date}</span>
               <span>•</span>
-              <span>{post.readTime} {translations.min[currentLanguage.code as keyof typeof translations.min] || translations.min.en}</span>
+              <span>
+                {post.readTime} {translations.min[currentLanguage.code as keyof typeof translations.min] || translations.min.en}
+              </span>
             </div>
             
             <h3 className={cn(
-              "font-playfair font-bold line-clamp-2 mb-2 group-hover:text-blog-indigo",
+              "font-playfair font-bold line-clamp-2 mb-2 transition-colors duration-300 group-hover:text-blog-indigo",
               isLarge ? "text-2xl" : "text-xl"
             )}>
               {post.title}
@@ -113,7 +117,7 @@ export function FeaturedPost({ post, isLarge = false }: FeaturedPostProps) {
               
               <Button 
                 variant="ghost" 
-                className="text-blog-indigo hover:text-blog-indigo/80 font-medium p-0"
+                className="text-blog-indigo hover:text-blog-indigo/80 font-medium p-0 relative after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-blog-indigo after:transition-all after:duration-300 hover:after:w-full"
               >
                 {translations.readMore[currentLanguage.code as keyof typeof translations.readMore] || translations.readMore.en}
               </Button>
