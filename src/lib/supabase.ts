@@ -1,12 +1,12 @@
 
 import { createClient } from '@supabase/supabase-js';
 
-// Replace these values with your actual Supabase project credentials
-const supabaseUrl = 'https://your-supabase-project-id.supabase.co';
-const supabaseAnonKey = 'your-supabase-anon-key';
+// Use the correct Supabase project URL and anon key
+const supabaseUrl = 'https://cglwhyeqzflstkjxuagk.supabase.co';
+const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNnbHdoeWVxemZsc3Rranh1YWdrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDcxOTc5NDMsImV4cCI6MjA2Mjc3Mzk0M30.NarMtHkQoYcDE6KRYcU-y5ehMah9R7RMv7sCITrPySM';
 
-if (supabaseUrl === 'https://your-supabase-project-id.supabase.co' || 
-    supabaseAnonKey === 'your-supabase-anon-key') {
+// We'll update the condition to check for empty strings instead
+if (!supabaseUrl || !supabaseAnonKey) {
   console.error('Please update your Supabase credentials in src/lib/supabase.ts');
 }
 
