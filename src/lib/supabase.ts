@@ -1,13 +1,13 @@
 
 import { createClient } from '@supabase/supabase-js';
 
-// Use direct strings for the Supabase URL and anon key since
-// the env variables might not be properly set in the environment
+// Replace these values with your actual Supabase project credentials
 const supabaseUrl = 'https://your-supabase-project-id.supabase.co';
 const supabaseAnonKey = 'your-supabase-anon-key';
 
-if (!supabaseUrl || !supabaseAnonKey) {
-  console.error('Missing Supabase configuration');
+if (!supabaseUrl === 'https://your-supabase-project-id.supabase.co' || 
+    supabaseAnonKey === 'your-supabase-anon-key') {
+  console.error('Please update your Supabase credentials in src/lib/supabase.ts');
 }
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
