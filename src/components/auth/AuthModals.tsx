@@ -9,6 +9,7 @@ import { Eye, EyeOff } from "lucide-react";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
@@ -90,6 +91,11 @@ export function AuthModals({ isOpen, onClose, initialMode = "login" }: AuthModal
           <DialogTitle className="text-center font-playfair text-2xl text-gray-800">
             {mode === "login" ? "Welcome Back" : "Join CloudiBlog"}
           </DialogTitle>
+          <DialogDescription className="text-center text-gray-600">
+            {mode === "login" 
+              ? "Sign in to continue to your account" 
+              : "Create an account to get started"}
+          </DialogDescription>
         </DialogHeader>
 
         <div className={`transition-all duration-300 ${mode === 'login' ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-[-30px] hidden'}`}>

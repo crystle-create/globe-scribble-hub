@@ -1,14 +1,7 @@
 
 import { useState, useEffect, createContext, useContext } from 'react';
 import { useToast } from "@/hooks/use-toast";
-import { auth, isAdminEmail } from "@/lib/firebase";
-import { 
-  signInWithEmailAndPassword, 
-  createUserWithEmailAndPassword,
-  signOut as firebaseSignOut,
-  onAuthStateChanged,
-  User as FirebaseUser
-} from "firebase/auth";
+import { supabase, isAdminEmail } from "@/lib/supabase";
 import { useNavigate } from "react-router-dom";
 
 type User = {
@@ -35,12 +28,35 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
-      if (firebaseUser) {
+    const { data: authListener } = supabase.auth.onAuthStateChange(
+      async (event, session) => {
+        if (session?.user) {
+          const userData = {
+            id: session.user.id,
+            email: session.user.email,
+            isAdmin: isAdminEmail(session.user.email)
+          };
+          setUser(userData);
+          
+          // Redirect admin to dashboard
+          if (userData.isAdmin) {
+            navigate("/admin/dashboard");
+          }
+        } else {
+          setUser(null);
+        }
+        setIsLoading(false);
+      }
+    );
+
+    // Initial session check
+    const initializeAuth = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session?.user) {
         const userData = {
-          id: firebaseUser.uid,
-          email: firebaseUser.email,
-          isAdmin: isAdminEmail(firebaseUser.email)
+          id: session.user.id,
+          email: session.user.email,
+          isAdmin: isAdminEmail(session.user.email)
         };
         setUser(userData);
         
@@ -48,28 +64,37 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         if (userData.isAdmin) {
           navigate("/admin/dashboard");
         }
-      } else {
-        setUser(null);
       }
       setIsLoading(false);
-    });
+    };
 
-    return () => unsubscribe();
+    initializeAuth();
+
+    return () => {
+      authListener?.subscription.unsubscribe();
+    };
   }, [navigate]);
 
   const signIn = async (email: string, password: string): Promise<void> => {
     setIsLoading(true);
     
     try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      const isAdmin = isAdminEmail(userCredential.user.email);
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password
+      });
+      
+      if (error) throw error;
+      
+      const isAdmin = isAdminEmail(data.user.email);
       
       toast({
         title: "Welcome back!",
         description: `You've successfully signed in${isAdmin ? " as admin" : ""}`,
       });
       
-    } catch (error) {
+    } catch (error: any) {
+      console.error('Error signing in:', error.message);
       toast({
         title: "Authentication failed",
         description: "Please check your credentials and try again",
@@ -84,16 +109,25 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setIsLoading(true);
     
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          emailRedirectTo: `${window.location.origin}/login`
+        }
+      });
+      
+      if (error) throw error;
       
       toast({
         title: "Account created!",
-        description: `Welcome to CloudiBlog`,
+        description: "Please check your email for verification instructions",
       });
-    } catch (error) {
+    } catch (error: any) {
+      console.error('Error signing up:', error.message);
       toast({
         title: "Sign up failed",
-        description: "Please try again with different credentials",
+        description: error.message || "Please try again with different credentials",
         variant: "destructive",
       });
     } finally {
@@ -101,15 +135,25 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  const signOut = () => {
-    firebaseSignOut(auth).then(() => {
-      setUser(null);
+  const signOut = async () => {
+    const { error } = await supabase.auth.signOut();
+    
+    if (error) {
+      console.error('Error signing out:', error.message);
       toast({
-        title: "Signed out",
-        description: "You've been successfully signed out",
+        title: "Error",
+        description: "Failed to sign out. Please try again.",
+        variant: "destructive",
       });
-      navigate("/");
+      return;
+    }
+    
+    setUser(null);
+    toast({
+      title: "Signed out",
+      description: "You've been successfully signed out",
     });
+    navigate("/");
   };
 
   return (

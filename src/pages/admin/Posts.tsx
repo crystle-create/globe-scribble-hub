@@ -10,22 +10,14 @@ import {
   TableHeader, 
   TableRow 
 } from "@/components/ui/table";
-import { db } from "@/lib/firebase";
-import { collection, getDocs, deleteDoc, doc, updateDoc } from "firebase/firestore";
 import { Plus, Edit, Trash, Eye } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { format } from "date-fns";
-
-type Post = {
-  id: string;
-  title: string;
-  published: boolean;
-  createdAt: Date;
-  updatedAt: Date;
-};
+import { getPosts, deletePost, updatePost } from "@/lib/supabaseDatabase";
+import type { BlogPost } from "@/lib/supabaseDatabase";
 
 export default function AdminPosts() {
-  const [posts, setPosts] = useState<Post[]>([]);
+  const [posts, setPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
 
@@ -35,19 +27,8 @@ export default function AdminPosts() {
 
   const fetchPosts = async () => {
     try {
-      const postsRef = collection(db, "posts");
-      const postsSnapshot = await getDocs(postsRef);
-      const postsList = postsSnapshot.docs.map(doc => {
-        const data = doc.data();
-        return {
-          id: doc.id,
-          title: data.title,
-          published: data.published,
-          createdAt: data.createdAt.toDate(),
-          updatedAt: data.updatedAt.toDate()
-        };
-      });
-      setPosts(postsList);
+      const postsData = await getPosts();
+      setPosts(postsData);
       setLoading(false);
     } catch (error) {
       console.error("Error fetching posts:", error);
@@ -63,7 +44,7 @@ export default function AdminPosts() {
   const handleDeletePost = async (id: string) => {
     if (window.confirm("Are you sure you want to delete this post?")) {
       try {
-        await deleteDoc(doc(db, "posts", id));
+        await deletePost(id);
         setPosts(posts.filter(post => post.id !== id));
         toast({
           title: "Success",
@@ -82,14 +63,11 @@ export default function AdminPosts() {
 
   const togglePublishStatus = async (id: string, currentStatus: boolean) => {
     try {
-      await updateDoc(doc(db, "posts", id), {
-        published: !currentStatus,
-        updatedAt: new Date()
-      });
+      await updatePost(id, { published: !currentStatus });
       
       setPosts(posts.map(post => 
         post.id === id 
-          ? { ...post, published: !post.published, updatedAt: new Date() } 
+          ? { ...post, published: !post.published, updated_at: new Date().toISOString() } 
           : post
       ));
       
@@ -104,6 +82,16 @@ export default function AdminPosts() {
         description: "Failed to update post status",
         variant: "destructive",
       });
+    }
+  };
+
+  const formatDate = (dateString?: string) => {
+    if (!dateString) return '';
+    try {
+      return format(new Date(dateString), "MMM d, yyyy");
+    } catch (error) {
+      console.error("Invalid date format:", dateString);
+      return '';
     }
   };
 
@@ -164,10 +152,10 @@ export default function AdminPosts() {
                     </span>
                   </TableCell>
                   <TableCell className="hidden md:table-cell">
-                    {format(post.updatedAt, "MMM d, yyyy")}
+                    {formatDate(post.updated_at)}
                   </TableCell>
                   <TableCell className="hidden md:table-cell">
-                    {format(post.createdAt, "MMM d, yyyy")}
+                    {formatDate(post.created_at)}
                   </TableCell>
                   <TableCell className="text-right">
                     <div className="flex justify-end space-x-2">

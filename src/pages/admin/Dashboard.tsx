@@ -1,8 +1,7 @@
 
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { db } from "@/lib/firebase";
-import { collection, getDocs, query, where, orderBy } from "firebase/firestore";
+import { getPosts } from "@/lib/supabaseDatabase";
 
 export default function AdminDashboard() {
   const [stats, setStats] = useState({
@@ -15,19 +14,19 @@ export default function AdminDashboard() {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const postsRef = collection(db, "posts");
-        const postsSnapshot = await getDocs(postsRef);
-        const totalPosts = postsSnapshot.size;
-        
-        const publishedQuery = query(postsRef, where("published", "==", true));
-        const publishedSnapshot = await getDocs(publishedQuery);
-        const publishedPosts = publishedSnapshot.size;
-        
+        const posts = await getPosts();
+        const totalPosts = posts.length;
+        const publishedPosts = posts.filter(post => post.published).length;
         const draftPosts = totalPosts - publishedPosts;
         
-        const recentPostQuery = query(postsRef, orderBy("updatedAt", "desc"));
-        const recentPostSnapshot = await getDocs(recentPostQuery);
-        const recentPost = recentPostSnapshot.docs[0]?.data().title || "No posts yet";
+        // Sort by updated_at descending
+        const sortedPosts = [...posts].sort((a, b) => {
+          if (!a.updated_at) return 1;
+          if (!b.updated_at) return -1;
+          return new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime();
+        });
+        
+        const recentPost = sortedPosts[0]?.title || "No posts yet";
         
         setStats({
           totalPosts,

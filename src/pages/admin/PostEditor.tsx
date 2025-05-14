@@ -4,10 +4,9 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { db } from "@/lib/firebase";
-import { doc, getDoc, setDoc, updateDoc, serverTimestamp, collection } from "firebase/firestore";
 import { useToast } from "@/hooks/use-toast";
 import { Card } from "@/components/ui/card";
+import { getPostById, createPost, updatePost } from "@/lib/supabaseDatabase";
 
 export default function PostEditor() {
   const { id } = useParams();
@@ -33,14 +32,16 @@ export default function PostEditor() {
 
   const fetchPost = async () => {
     try {
-      const postDoc = await getDoc(doc(db, "posts", id as string));
-      if (postDoc.exists()) {
-        const data = postDoc.data();
+      if (!id) return;
+      
+      const postData = await getPostById(id);
+      
+      if (postData) {
         setPost({
-          title: data.title,
-          excerpt: data.excerpt,
-          content: data.content,
-          published: data.published
+          title: postData.title,
+          excerpt: postData.excerpt,
+          content: postData.content,
+          published: postData.published
         });
       } else {
         toast({
@@ -85,17 +86,12 @@ export default function PostEditor() {
         excerpt: post.excerpt,
         content: post.content,
         published,
-        updatedAt: serverTimestamp()
       };
       
-      if (isEditing) {
-        await updateDoc(doc(db, "posts", id as string), postData);
+      if (isEditing && id) {
+        await updatePost(id, postData);
       } else {
-        const newPostRef = doc(collection(db, "posts"));
-        await setDoc(newPostRef, {
-          ...postData,
-          createdAt: serverTimestamp()
-        });
+        await createPost(postData);
       }
       
       toast({
