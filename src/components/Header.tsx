@@ -1,14 +1,16 @@
 
 import { Button } from "@/components/ui/button";
-import { Cloud, Sun, Search } from "lucide-react";
+import { Cloud, Sun, Search, LayoutDashboard } from "lucide-react";
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import { SearchDialog } from "./SearchDialog";
 import { AuthButtons } from "./auth/AuthButtons";
+import { useAuth } from "@/hooks/useAdmin";
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const { isAdmin } = useAuth();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -48,7 +50,20 @@ export function Header() {
           </Button>
         </nav>
 
-        <div className="hidden md:block">
+        <div className="hidden md:flex items-center space-x-4">
+          {isAdmin && (
+            <Button 
+              asChild
+              variant="outline" 
+              size="sm" 
+              className="bg-blue-50 text-blue-600 border-blue-200 hover:bg-blue-100 transition-all duration-300"
+            >
+              <Link to="/admin/dashboard">
+                <LayoutDashboard className="mr-2 h-4 w-4" />
+                Dashboard
+              </Link>
+            </Button>
+          )}
           <AuthButtons />
         </div>
 
@@ -63,7 +78,19 @@ export function Header() {
             <Search className="h-5 w-5" />
           </Button>
 
-          <div className="md:hidden">
+          <div className="md:hidden flex items-center space-x-2">
+            {isAdmin && (
+              <Button 
+                asChild
+                variant="outline" 
+                size="sm" 
+                className="bg-blue-50 text-blue-600 border-blue-200 hover:bg-blue-100"
+              >
+                <Link to="/admin/dashboard">
+                  <LayoutDashboard className="h-4 w-4" />
+                </Link>
+              </Button>
+            )}
             <AuthButtons />
           </div>
           

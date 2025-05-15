@@ -3,10 +3,11 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { Card } from "@/components/ui/card";
 import { getPostById, createPost, updatePost } from "@/lib/supabaseDatabase";
+import { RichTextEditor } from "@/components/editor/RichTextEditor";
+import { Image, Save, Upload } from "lucide-react";
 
 export default function PostEditor() {
   const { id } = useParams();
@@ -16,13 +17,14 @@ export default function PostEditor() {
   
   const [post, setPost] = useState({
     title: "",
-    excerpt: "",
     content: "",
+    coverImage: "",
     published: false
   });
   
   const [loading, setLoading] = useState(isEditing);
   const [saving, setSaving] = useState(false);
+  const [uploadingImage, setUploadingImage] = useState(false);
 
   useEffect(() => {
     if (isEditing) {
@@ -39,8 +41,8 @@ export default function PostEditor() {
       if (postData) {
         setPost({
           title: postData.title,
-          excerpt: postData.excerpt,
-          content: postData.content,
+          content: postData.content || "",
+          coverImage: postData.coverImage || "",
           published: postData.published
         });
       } else {
@@ -63,9 +65,28 @@ export default function PostEditor() {
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setPost(prev => ({ ...prev, [name]: value }));
+  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPost(prev => ({ ...prev, title: e.target.value }));
+  };
+
+  const handleContentChange = (content: string) => {
+    setPost(prev => ({ ...prev, content }));
+  };
+
+  const handleCoverImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setUploadingImage(true);
+      
+      // In a real implementation, you'd upload to Supabase Storage here
+      // For now we'll simulate uploading by creating a data URL
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPost(prev => ({ ...prev, coverImage: reader.result as string }));
+        setUploadingImage(false);
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   const savePost = async (published: boolean) => {
@@ -83,21 +104,24 @@ export default function PostEditor() {
     try {
       const postData = {
         title: post.title,
-        excerpt: post.excerpt,
         content: post.content,
+        coverImage: post.coverImage,
         published,
       };
       
       if (isEditing && id) {
         await updatePost(id, postData);
+        toast({
+          title: "Success",
+          description: `Post ${published ? "published" : "saved as draft"} successfully`,
+        });
       } else {
         await createPost(postData);
+        toast({
+          title: "Success",
+          description: `Post ${published ? "published" : "created as draft"} successfully`,
+        });
       }
-      
-      toast({
-        title: "Success",
-        description: `Post ${isEditing ? "updated" : "created"} successfully`,
-      });
       
       navigate("/admin/posts");
     } catch (error) {
@@ -134,61 +158,92 @@ export default function PostEditor() {
             variant="outline" 
             onClick={() => savePost(false)} 
             disabled={saving}
+            className="bg-gray-50 border-gray-200 hover:bg-gray-100"
           >
+            <Save className="mr-2 h-4 w-4" />
             Save as Draft
           </Button>
           <Button 
             onClick={() => savePost(true)} 
             disabled={saving}
+            className="bg-blue-500 hover:bg-blue-600"
           >
             {saving ? "Saving..." : "Publish"}
           </Button>
         </div>
       </div>
       
-      <Card className="p-6">
+      <Card className="p-6 mb-6">
         <div className="space-y-6">
           <div>
             <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">
-              Title
+              Title*
             </label>
             <Input
               id="title"
               name="title"
               value={post.title}
-              onChange={handleChange}
+              onChange={handleTitleChange}
               placeholder="Post title"
               className="w-full"
             />
           </div>
           
           <div>
-            <label htmlFor="excerpt" className="block text-sm font-medium text-gray-700 mb-1">
-              Excerpt
+            <label htmlFor="coverImage" className="block text-sm font-medium text-gray-700 mb-1">
+              Cover Image
             </label>
-            <Textarea
-              id="excerpt"
-              name="excerpt"
-              value={post.excerpt}
-              onChange={handleChange}
-              placeholder="Brief description of your post"
-              className="w-full"
-              rows={3}
-            />
+            <div className="flex flex-col space-y-2">
+              <label 
+                htmlFor="coverImageInput" 
+                className={`
+                  flex items-center justify-center border-2 border-dashed rounded-md p-4 
+                  ${uploadingImage ? 'bg-gray-100 cursor-wait' : 'hover:bg-gray-50 cursor-pointer'}
+                `}
+              >
+                <input
+                  id="coverImageInput"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleCoverImageChange}
+                  className="sr-only"
+                  disabled={uploadingImage}
+                />
+                <div className="flex flex-col items-center">
+                  <Upload className="h-8 w-8 text-gray-400 mb-2" />
+                  <span className="text-sm text-gray-500">
+                    {uploadingImage ? "Uploading..." : "Click to upload cover image"}
+                  </span>
+                </div>
+              </label>
+              
+              {post.coverImage && (
+                <div className="relative mt-2">
+                  <img 
+                    src={post.coverImage} 
+                    alt="Cover" 
+                    className="w-full h-48 object-cover rounded-md"
+                  />
+                  <Button
+                    variant="destructive"
+                    size="sm"
+                    className="absolute top-2 right-2"
+                    onClick={() => setPost(prev => ({ ...prev, coverImage: "" }))}
+                  >
+                    Remove
+                  </Button>
+                </div>
+              )}
+            </div>
           </div>
           
           <div>
             <label htmlFor="content" className="block text-sm font-medium text-gray-700 mb-1">
               Content
             </label>
-            <Textarea
-              id="content"
-              name="content"
-              value={post.content}
-              onChange={handleChange}
-              placeholder="Write your post content here..."
-              className="w-full min-h-[400px]"
-              rows={15}
+            <RichTextEditor 
+              content={post.content}
+              onChange={handleContentChange}
             />
           </div>
         </div>

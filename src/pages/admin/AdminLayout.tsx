@@ -1,7 +1,7 @@
 
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { useAuth } from "@/hooks/useAdmin";
-import { LayoutDashboard, FileText, Settings, LogOut } from "lucide-react";
+import { LayoutDashboard, FileText, Settings, LogOut, Home } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 
@@ -57,6 +57,17 @@ export default function AdminLayout() {
                 Settings
               </Button>
             </Link>
+            
+            {/* Go to Site Button */}
+            <Link to="/">
+              <Button 
+                variant="ghost"
+                className="w-full justify-start text-blue-500 hover:text-blue-600 hover:bg-blue-50"
+              >
+                <Home className="mr-3 h-5 w-5" />
+                Go to Site
+              </Button>
+            </Link>
           </nav>
           
           <div className="p-4">
@@ -80,9 +91,16 @@ export default function AdminLayout() {
             <span className="text-xl font-bold font-playfair text-gray-800">CloudiBlog</span>
           </Link>
           
-          <Button variant="ghost" size="sm" onClick={signOut}>
-            <LogOut className="h-5 w-5" />
-          </Button>
+          <div className="flex space-x-2">
+            <Link to="/">
+              <Button variant="ghost" size="sm" className="text-blue-500">
+                <Home className="h-5 w-5" />
+              </Button>
+            </Link>
+            <Button variant="ghost" size="sm" onClick={signOut}>
+              <LogOut className="h-5 w-5" />
+            </Button>
+          </div>
         </div>
         
         <div className="flex justify-around border-t">

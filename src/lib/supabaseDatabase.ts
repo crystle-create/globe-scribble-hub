@@ -4,8 +4,9 @@ import { supabase } from './supabase';
 export type BlogPost = {
   id: string;
   title: string;
-  excerpt: string;
+  excerpt?: string;
   content: string;
+  coverImage?: string;
   published: boolean;
   created_at?: string;
   updated_at?: string;
