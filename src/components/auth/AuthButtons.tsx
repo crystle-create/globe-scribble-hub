@@ -39,6 +39,14 @@ export function AuthButtons() {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="bg-white shadow-md border border-gray-100">
+            {user.isAdmin && (
+              <DropdownMenuItem
+                className="text-blue-600 hover:text-blue-700 cursor-pointer"
+                asChild
+              >
+                <a href="/admin/dashboard">Dashboard</a>
+              </DropdownMenuItem>
+            )}
             <DropdownMenuItem
               className="text-gray-700 hover:text-gray-900 cursor-pointer"
               onClick={signOut}
