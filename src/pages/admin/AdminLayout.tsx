@@ -10,7 +10,7 @@ export default function AdminLayout() {
   const location = useLocation();
   
   const isActive = (path: string) => {
-    return location.pathname === path;
+    return location.pathname === path || location.pathname.startsWith(`${path}/`);
   };
   
   return (
@@ -58,14 +58,14 @@ export default function AdminLayout() {
               </Button>
             </Link>
             
-            {/* Go to Site Button */}
+            {/* Go to Site Button - Now clearly labeled and prominent */}
             <Link to="/">
               <Button 
-                variant="ghost"
+                variant="outline"
                 className="w-full justify-start text-blue-500 hover:text-blue-600 hover:bg-blue-50"
               >
                 <Home className="mr-3 h-5 w-5" />
-                Go to Site
+                View Site
               </Button>
             </Link>
           </nav>
@@ -93,7 +93,7 @@ export default function AdminLayout() {
           
           <div className="flex space-x-2">
             <Link to="/">
-              <Button variant="ghost" size="sm" className="text-blue-500">
+              <Button variant="outline" size="sm" className="text-blue-500">
                 <Home className="h-5 w-5" />
               </Button>
             </Link>
