@@ -1,7 +1,7 @@
 
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { useAuth } from "@/hooks/useAdmin";
-import { LayoutDashboard, FileText, Settings, LogOut, Home } from "lucide-react";
+import { LogOut, Home, LayoutDashboard, FileText, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 
@@ -58,7 +58,7 @@ export default function AdminLayout() {
               </Button>
             </Link>
             
-            {/* Go to Site Button - Now clearly labeled and prominent */}
+            {/* View Site Button - Clearly labeled and prominent */}
             <Link to="/">
               <Button 
                 variant="outline"
