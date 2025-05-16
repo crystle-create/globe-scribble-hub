@@ -2,27 +2,13 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { 
-  Table, 
-  TableBody, 
-  TableCell, 
-  TableHead, 
-  TableHeader, 
-  TableRow 
-} from "@/components/ui/table";
-import { 
-  Card, 
-  CardContent, 
-  CardDescription, 
-  CardFooter, 
-  CardHeader, 
-  CardTitle 
-} from "@/components/ui/card";
-import { Plus, Edit, Trash, Eye, FileText, FileMinus, FileBarChart } from "lucide-react";
+import { Plus } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { format } from "date-fns";
-import { getPosts, deletePost, updatePost } from "@/lib/supabaseDatabase";
+import { getPosts } from "@/lib/supabaseDatabase";
 import type { BlogPost } from "@/lib/supabaseDatabase";
+import { PostsStats } from "@/components/admin/PostsStats";
+import { PostsTable } from "@/components/admin/PostsTable";
+import { EmptyPostsState } from "@/components/admin/EmptyPostsState";
 
 export default function AdminPosts() {
   const [posts, setPosts] = useState<BlogPost[]>([]);
@@ -49,58 +35,14 @@ export default function AdminPosts() {
     }
   };
 
-  const handleDeletePost = async (id: string) => {
-    if (window.confirm("Are you sure you want to delete this post?")) {
-      try {
-        await deletePost(id);
-        setPosts(posts.filter(post => post.id !== id));
-        toast({
-          title: "Success",
-          description: "Post deleted successfully",
-        });
-      } catch (error) {
-        console.error("Error deleting post:", error);
-        toast({
-          title: "Error",
-          description: "Failed to delete post",
-          variant: "destructive",
-        });
-      }
-    }
+  const handlePostUpdate = (updatedPost: BlogPost) => {
+    setPosts(posts.map(post => 
+      post.id === updatedPost.id ? updatedPost : post
+    ));
   };
 
-  const togglePublishStatus = async (id: string, currentStatus: boolean) => {
-    try {
-      await updatePost(id, { published: !currentStatus });
-      
-      setPosts(posts.map(post => 
-        post.id === id 
-          ? { ...post, published: !post.published, updated_at: new Date().toISOString() } 
-          : post
-      ));
-      
-      toast({
-        title: "Success",
-        description: `Post ${!currentStatus ? "published" : "unpublished"} successfully`,
-      });
-    } catch (error) {
-      console.error("Error updating post:", error);
-      toast({
-        title: "Error",
-        description: "Failed to update post status",
-        variant: "destructive",
-      });
-    }
-  };
-
-  const formatDate = (dateString?: string) => {
-    if (!dateString) return '';
-    try {
-      return format(new Date(dateString), "MMM d, yyyy");
-    } catch (error) {
-      console.error("Invalid date format:", dateString);
-      return '';
-    }
+  const handlePostDelete = (id: string) => {
+    setPosts(posts.filter(post => post.id !== id));
   };
 
   // Stats calculations
@@ -120,43 +62,11 @@ export default function AdminPosts() {
       </div>
       
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-lg font-medium flex items-center">
-              <FileBarChart className="mr-2 h-5 w-5 text-blue-500" />
-              Total Posts
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-3xl font-bold">{totalPosts}</p>
-          </CardContent>
-        </Card>
-        
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-lg font-medium flex items-center">
-              <FileText className="mr-2 h-5 w-5 text-green-500" />
-              Published
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-3xl font-bold">{publishedPosts}</p>
-          </CardContent>
-        </Card>
-        
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-lg font-medium flex items-center">
-              <FileMinus className="mr-2 h-5 w-5 text-amber-500" />
-              Drafts
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-3xl font-bold">{draftPosts}</p>
-          </CardContent>
-        </Card>
-      </div>
+      <PostsStats 
+        totalPosts={totalPosts} 
+        publishedPosts={publishedPosts} 
+        draftPosts={draftPosts} 
+      />
       
       {loading ? (
         <div className="flex justify-center py-8">
@@ -167,77 +77,13 @@ export default function AdminPosts() {
           </div>
         </div>
       ) : posts.length === 0 ? (
-        <div className="text-center py-16 glass-card">
-          <h2 className="text-xl font-medium text-gray-600 mb-4">No posts yet</h2>
-          <p className="text-gray-500 mb-6">Start creating your first blog post</p>
-          <Button asChild>
-            <Link to="/admin/posts/new">
-              <Plus className="mr-2 h-4 w-4" /> Create Your First Post
-            </Link>
-          </Button>
-        </div>
+        <EmptyPostsState />
       ) : (
-        <div className="rounded-md border">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Title</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead className="hidden md:table-cell">Updated</TableHead>
-                <TableHead className="hidden md:table-cell">Created</TableHead>
-                <TableHead className="text-right">Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {posts.map((post) => (
-                <TableRow key={post.id}>
-                  <TableCell className="font-medium">{post.title}</TableCell>
-                  <TableCell>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => togglePublishStatus(post.id, post.published)}
-                      className={`px-2.5 py-0.5 text-xs font-medium ${
-                        post.published 
-                          ? "bg-green-100 text-green-800 hover:bg-green-200" 
-                          : "bg-gray-100 text-gray-800 hover:bg-gray-200"
-                      }`}
-                    >
-                      {post.published ? "Published" : "Draft"}
-                    </Button>
-                  </TableCell>
-                  <TableCell className="hidden md:table-cell">
-                    {formatDate(post.updated_at)}
-                  </TableCell>
-                  <TableCell className="hidden md:table-cell">
-                    {formatDate(post.created_at)}
-                  </TableCell>
-                  <TableCell className="text-right">
-                    <div className="flex justify-end space-x-2">
-                      <Button variant="ghost" size="icon" asChild>
-                        <Link to={`/post/${post.id}`} target="_blank">
-                          <Eye className="h-4 w-4" />
-                        </Link>
-                      </Button>
-                      <Button variant="ghost" size="icon" asChild>
-                        <Link to={`/admin/posts/edit/${post.id}`}>
-                          <Edit className="h-4 w-4" />
-                        </Link>
-                      </Button>
-                      <Button 
-                        variant="ghost" 
-                        size="icon"
-                        onClick={() => handleDeletePost(post.id)}
-                      >
-                        <Trash className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
+        <PostsTable 
+          posts={posts} 
+          onPostUpdate={handlePostUpdate}
+          onPostDelete={handlePostDelete}
+        />
       )}
     </div>
   );
