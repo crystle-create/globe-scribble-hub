@@ -1,9 +1,8 @@
 
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { useAuth } from "@/hooks/useAdmin";
-import { LogOut, Home, LayoutDashboard, FileText, Settings } from "lucide-react";
+import { LogOut, Home, FileText, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
 
 export default function AdminLayout() {
   const { signOut } = useAuth();
@@ -30,15 +29,6 @@ export default function AdminLayout() {
           </div>
           
           <nav className="mt-12 flex-1 px-2 space-y-1">
-            <Link to="/admin/dashboard">
-              <Button 
-                variant={isActive("/admin/dashboard") ? "default" : "ghost"} 
-                className="w-full justify-start"
-              >
-                <LayoutDashboard className="mr-3 h-5 w-5" />
-                Dashboard
-              </Button>
-            </Link>
             <Link to="/admin/posts">
               <Button 
                 variant={isActive("/admin/posts") ? "default" : "ghost"} 
@@ -104,10 +94,6 @@ export default function AdminLayout() {
         </div>
         
         <div className="flex justify-around border-t">
-          <Link to="/admin/dashboard" className="flex-1 text-center py-3">
-            <LayoutDashboard className={`mx-auto h-5 w-5 ${isActive("/admin/dashboard") ? "text-blue-500" : "text-gray-500"}`} />
-            <span className="text-xs block mt-1">Dashboard</span>
-          </Link>
           <Link to="/admin/posts" className="flex-1 text-center py-3">
             <FileText className={`mx-auto h-5 w-5 ${isActive("/admin/posts") ? "text-blue-500" : "text-gray-500"}`} />
             <span className="text-xs block mt-1">Posts</span>
