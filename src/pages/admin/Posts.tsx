@@ -18,7 +18,7 @@ import {
   CardHeader, 
   CardTitle 
 } from "@/components/ui/card";
-import { Plus, Edit, Trash, Eye, FileText, FileMinus, FileText2 } from "lucide-react";
+import { Plus, Edit, Trash, Eye, FileText, FileMinus, FileBarChart } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { format } from "date-fns";
 import { getPosts, deletePost, updatePost } from "@/lib/supabaseDatabase";
@@ -124,7 +124,7 @@ export default function AdminPosts() {
         <Card>
           <CardHeader className="pb-2">
             <CardTitle className="text-lg font-medium flex items-center">
-              <FileText2 className="mr-2 h-5 w-5 text-blue-500" />
+              <FileBarChart className="mr-2 h-5 w-5 text-blue-500" />
               Total Posts
             </CardTitle>
           </CardHeader>
