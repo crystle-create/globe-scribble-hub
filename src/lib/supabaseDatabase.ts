@@ -14,23 +14,28 @@ export type BlogPost = {
 
 // Get all posts, optionally filtering by published status
 export async function getPosts(publishedOnly: boolean = false) {
-  let query = supabase
-    .from('posts')
-    .select('*')
-    .order('updated_at', { ascending: false });
-  
-  if (publishedOnly) {
-    query = query.eq('published', true);
+  try {
+    let query = supabase
+      .from('posts')
+      .select('*')
+      .order('updated_at', { ascending: false });
+    
+    if (publishedOnly) {
+      query = query.eq('published', true);
+    }
+    
+    const { data, error } = await query;
+    
+    if (error) {
+      console.error('Error fetching posts:', error);
+      return []; // Return empty array instead of throwing to prevent UI crashes
+    }
+    
+    return data || [];
+  } catch (error) {
+    console.error('Exception fetching posts:', error);
+    return []; // Return empty array on any error
   }
-  
-  const { data, error } = await query;
-  
-  if (error) {
-    console.error('Error fetching posts:', error);
-    throw error;
-  }
-  
-  return data || [];
 }
 
 // Get a single post by ID
