@@ -10,7 +10,15 @@ import {
   TableHeader, 
   TableRow 
 } from "@/components/ui/table";
-import { Plus, Edit, Trash, Eye } from "lucide-react";
+import { 
+  Card, 
+  CardContent, 
+  CardDescription, 
+  CardFooter, 
+  CardHeader, 
+  CardTitle 
+} from "@/components/ui/card";
+import { Plus, Edit, Trash, Eye, FileText, FileMinus, FileText2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { format } from "date-fns";
 import { getPosts, deletePost, updatePost } from "@/lib/supabaseDatabase";
@@ -95,6 +103,11 @@ export default function AdminPosts() {
     }
   };
 
+  // Stats calculations
+  const totalPosts = posts.length;
+  const publishedPosts = posts.filter(post => post.published).length;
+  const draftPosts = posts.filter(post => !post.published).length;
+
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
@@ -104,6 +117,45 @@ export default function AdminPosts() {
             <Plus className="mr-2 h-4 w-4" /> New Post
           </Link>
         </Button>
+      </div>
+      
+      {/* Stats Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-lg font-medium flex items-center">
+              <FileText2 className="mr-2 h-5 w-5 text-blue-500" />
+              Total Posts
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-3xl font-bold">{totalPosts}</p>
+          </CardContent>
+        </Card>
+        
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-lg font-medium flex items-center">
+              <FileText className="mr-2 h-5 w-5 text-green-500" />
+              Published
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-3xl font-bold">{publishedPosts}</p>
+          </CardContent>
+        </Card>
+        
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-lg font-medium flex items-center">
+              <FileMinus className="mr-2 h-5 w-5 text-amber-500" />
+              Drafts
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-3xl font-bold">{draftPosts}</p>
+          </CardContent>
+        </Card>
       </div>
       
       {loading ? (
@@ -141,15 +193,18 @@ export default function AdminPosts() {
                 <TableRow key={post.id}>
                   <TableCell className="font-medium">{post.title}</TableCell>
                   <TableCell>
-                    <span 
-                      className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => togglePublishStatus(post.id, post.published)}
+                      className={`px-2.5 py-0.5 text-xs font-medium ${
                         post.published 
-                          ? "bg-green-100 text-green-800" 
-                          : "bg-gray-100 text-gray-800"
+                          ? "bg-green-100 text-green-800 hover:bg-green-200" 
+                          : "bg-gray-100 text-gray-800 hover:bg-gray-200"
                       }`}
                     >
                       {post.published ? "Published" : "Draft"}
-                    </span>
+                    </Button>
                   </TableCell>
                   <TableCell className="hidden md:table-cell">
                     {formatDate(post.updated_at)}
