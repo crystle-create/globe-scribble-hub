@@ -55,8 +55,6 @@ const App = () => {
                 {/* Admin routes - protected and require admin */}
                 <Route element={<ProtectedRoute requireAdmin />}>
                   <Route element={<AdminLayout />}>
-                    {/* Redirect /admin/dashboard to /admin/posts */}
-                    <Route path="/admin/dashboard" element={<Navigate to="/admin/posts" replace />} />
                     <Route path="/admin" element={<Navigate to="/admin/posts" replace />} />
                     <Route path="/admin/posts" element={<AdminPosts />} />
                     <Route path="/admin/posts/new" element={<PostEditor />} />
