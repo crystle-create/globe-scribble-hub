@@ -22,13 +22,21 @@ import AdminPosts from "./pages/admin/Posts";
 import PostEditor from "./pages/admin/PostEditor";
 import AdminSettings from "./pages/admin/Settings";
 
-const queryClient = new QueryClient();
+// Create a client
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 60 * 5, // 5 minutes
+      retry: 1,
+    },
+  },
+});
 
 const App = () => {
   return (
-    <QueryClientProvider client={queryClient}>
-      <LanguageProvider>
-        <BrowserRouter>
+    <BrowserRouter>
+      <QueryClientProvider client={queryClient}>
+        <LanguageProvider>
           <AuthProvider>
             <TooltipProvider>
               <Toaster />
@@ -61,9 +69,9 @@ const App = () => {
               </Routes>
             </TooltipProvider>
           </AuthProvider>
-        </BrowserRouter>
-      </LanguageProvider>
-    </QueryClientProvider>
+        </LanguageProvider>
+      </QueryClientProvider>
+    </BrowserRouter>
   );
 };
 
