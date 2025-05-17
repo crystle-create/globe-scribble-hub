@@ -21,6 +21,7 @@ import AdminLayout from "./pages/admin/AdminLayout";
 import AdminPosts from "./pages/admin/Posts";
 import PostEditor from "./pages/admin/PostEditor";
 import AdminSettings from "./pages/admin/Settings";
+import AdminDashboard from "./pages/admin/Dashboard";
 
 // Create a client
 const queryClient = new QueryClient({
@@ -56,6 +57,7 @@ const App = () => {
                 <Route element={<ProtectedRoute requireAdmin />}>
                   <Route element={<AdminLayout />}>
                     <Route path="/admin" element={<Navigate to="/admin/posts" replace />} />
+                    <Route path="/admin/dashboard" element={<AdminDashboard />} />
                     <Route path="/admin/posts" element={<AdminPosts />} />
                     <Route path="/admin/posts/new" element={<PostEditor />} />
                     <Route path="/admin/posts/edit/:id" element={<PostEditor />} />
