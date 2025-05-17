@@ -15,6 +15,7 @@ import { format } from "date-fns";
 import { updatePost, deletePost } from "@/lib/supabaseDatabase";
 import type { BlogPost } from "@/lib/supabaseDatabase";
 import { useToast } from "@/hooks/use-toast";
+import { Badge } from "@/components/ui/badge";
 
 interface PostsTableProps {
   posts: BlogPost[];
@@ -84,6 +85,7 @@ export function PostsTable({ posts, onPostUpdate, onPostDelete }: PostsTableProp
           <TableRow>
             <TableHead>Title</TableHead>
             <TableHead>Status</TableHead>
+            <TableHead className="hidden md:table-cell">Category</TableHead>
             <TableHead className="hidden md:table-cell">Updated</TableHead>
             <TableHead className="hidden md:table-cell">Created</TableHead>
             <TableHead className="text-right">Actions</TableHead>
@@ -106,6 +108,15 @@ export function PostsTable({ posts, onPostUpdate, onPostDelete }: PostsTableProp
                 >
                   {post.published ? "Published" : "Draft"}
                 </Button>
+              </TableCell>
+              <TableCell className="hidden md:table-cell">
+                {post.category ? (
+                  <Badge variant="outline" className="bg-blue-50">
+                    {post.category}
+                  </Badge>
+                ) : (
+                  <span className="text-gray-400 text-xs">Uncategorized</span>
+                )}
               </TableCell>
               <TableCell className="hidden md:table-cell">
                 {formatDate(post.updated_at)}

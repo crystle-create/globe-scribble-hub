@@ -8,6 +8,8 @@ import { TitleField } from "@/components/admin/TitleField";
 import { ImageUploader } from "@/components/admin/ImageUploader";
 import { ContentEditor } from "@/components/admin/ContentEditor";
 import { PublishControls } from "@/components/admin/PublishControls";
+import { CategoryField } from "@/components/admin/CategoryField";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default function PostEditor() {
   const { id } = useParams();
@@ -19,6 +21,7 @@ export default function PostEditor() {
     title: "",
     content: "",
     coverImage: "",
+    category: "",
     published: false
   });
   
@@ -42,6 +45,7 @@ export default function PostEditor() {
           title: postData.title,
           content: postData.content || "",
           coverImage: postData.coverImage || "",
+          category: postData.category || "",
           published: postData.published
         });
       } else {
@@ -76,6 +80,10 @@ export default function PostEditor() {
     setPost(prev => ({ ...prev, coverImage }));
   };
 
+  const handleCategoryChange = (category: string) => {
+    setPost(prev => ({ ...prev, category }));
+  };
+
   const savePost = async (published: boolean) => {
     if (!post.title.trim()) {
       toast({
@@ -93,6 +101,7 @@ export default function PostEditor() {
         title: post.title,
         content: post.content,
         coverImage: post.coverImage,
+        category: post.category,
         published,
       };
       
@@ -154,10 +163,17 @@ export default function PostEditor() {
             onChange={handleTitleChange} 
           />
           
-          <ImageUploader 
-            initialImage={post.coverImage} 
-            onImageChange={handleCoverImageChange} 
-          />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <ImageUploader 
+              initialImage={post.coverImage} 
+              onImageChange={handleCoverImageChange} 
+            />
+            
+            <CategoryField
+              category={post.category}
+              onChange={handleCategoryChange}
+            />
+          </div>
           
           <ContentEditor 
             content={post.content} 

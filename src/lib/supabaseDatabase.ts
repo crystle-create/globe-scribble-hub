@@ -7,6 +7,7 @@ export type BlogPost = {
   excerpt?: string;
   content: string;
   coverImage?: string;
+  category?: string;
   published: boolean;
   created_at?: string;
   updated_at?: string;
@@ -35,6 +36,27 @@ export async function getPosts(publishedOnly: boolean = false) {
   } catch (error) {
     console.error('Exception fetching posts:', error);
     return []; // Return empty array on any error
+  }
+}
+
+// Get draft posts only
+export async function getDraftPosts() {
+  try {
+    const { data, error } = await supabase
+      .from('posts')
+      .select('*')
+      .eq('published', false)
+      .order('updated_at', { ascending: false });
+    
+    if (error) {
+      console.error('Error fetching draft posts:', error);
+      return [];
+    }
+    
+    return data || [];
+  } catch (error) {
+    console.error('Exception fetching draft posts:', error);
+    return [];
   }
 }
 
